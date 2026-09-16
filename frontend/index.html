@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
@@ -33,14 +33,20 @@
             }
           },
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans Malayalam"', 'sans-serif'],
+            serif: ['"Playfair Display"', '"Noto Sans Malayalam"', 'serif'],
           }
         }
       }
     }
   </script>
   <style>
+    body.lang-ml {
+      font-family: 'Noto Sans Malayalam', 'Plus Jakarta Sans', sans-serif;
+    }
+    body.lang-ml .font-serif {
+      font-family: 'Noto Sans Malayalam', 'Playfair Display', serif;
+    }
     .glass-nav {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
@@ -77,33 +83,39 @@
         </div>
         <div>
           <span class="text-2xl font-black tracking-tight text-brand-900 block leading-tight">Farm<span class="text-brand-500">Start</span></span>
-          <span class="text-[10px] uppercase font-bold tracking-widest text-earth-600 block">First-Time Farmer Copilot</span>
+          <span id="nav-brand-sub" class="text-[10px] uppercase font-bold tracking-widest text-earth-600 block">First-Time Farmer Copilot</span>
         </div>
       </a>
 
       <!-- Navigation Links -->
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-stone-700">
         <a href="#advisory-tool" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span>Sowing Advisory</span>
+          <span id="nav-sowing">Sowing Advisory</span>
         </a>
         <a href="#crops" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span>Crop Catalog</span>
+          <span id="nav-catalog">Crop Catalog</span>
         </a>
         <a href="#ai-assistant" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span>AI Companion</span>
+          <span id="nav-ai">AI Companion</span>
           <span class="bg-brand-100 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Groq AI</span>
         </a>
         <a href="#schemes" class="hover:text-brand-600 transition-colors">
-          <span>Govt Subsidies</span>
+          <span id="nav-schemes">Govt Subsidies</span>
         </a>
       </nav>
 
       <!-- Active Location Pill & Status -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher Button (English / മലയാളം) -->
+        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-300 transition shadow-xs cursor-pointer active:scale-95" title="ഭാഷ മാറ്റുക / Toggle Language">
+          <i class="fa-solid fa-language text-emerald-600 text-sm"></i>
+          <span id="lang-toggle-label">മലയാളം</span>
+        </button>
+
         <!-- Dynamic Farmer Profile Name -->
         <div class="flex items-center gap-2 bg-stone-100 px-3 py-1.5 rounded-full text-xs font-medium text-stone-700 border border-stone-200 hover:border-brand-500 transition">
           <i class="fa-solid fa-circle-user text-brand-600 text-sm"></i>
-          <span class="text-stone-400 font-semibold hidden sm:inline">Farmer:</span>
+          <span id="farmer-label-prefix" class="text-stone-400 font-semibold hidden sm:inline">Farmer:</span>
           <input type="text" id="farmer-name-input" value="Farmer" placeholder="Your Name" class="bg-transparent font-bold text-stone-900 text-xs w-20 sm:w-28 focus:w-36 focus:outline-none placeholder-stone-400 transition-all cursor-pointer hover:underline focus:no-underline" title="Click to customize your name">
         </div>
 
@@ -111,9 +123,9 @@
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-dot"></span>
           <span id="active-location-badge">Idukki, Kerala · Hill soil</span>
         </div>
-        <a href="#advisory-tool" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95 flex items-center gap-2">
+        <a href="#advisory-tool" class="bg-brand-600 hover:bg-brand-700 text-white text-sm font-bold px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95 flex items-center gap-2">
           <i class="fa-solid fa-bolt text-amber-300"></i>
-          <span>Check Now</span>
+          <span id="btn-check-now-text">Check Now</span>
         </a>
       </div>
 
@@ -132,15 +144,15 @@
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs sm:text-sm font-semibold px-4 py-1.5 rounded-full mb-6 shadow-sm">
           <i class="fa-solid fa-sparkles text-amber-300"></i>
-          <span>Kerala AI Agriculture Conclave 2026</span>
+          <span id="hero-badge-text">Kerala AI Agriculture Conclave 2026</span>
         </div>
 
         <!-- Headline -->
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-4">
+        <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-4">
           FarmStart: <span class="text-emerald-300 font-serif italic font-normal">Grow with Confidence.</span>
         </h1>
         
-        <p class="max-w-2xl mx-auto text-lg sm:text-xl text-stone-200 font-normal mb-10 leading-relaxed">
+        <p id="hero-desc" class="max-w-2xl mx-auto text-lg sm:text-xl text-stone-200 font-normal mb-10 leading-relaxed">
           Remove guesswork from your first season. Live weather forecasts, scikit-learn ML suitability scores, and fair seed price benchmarks.
         </p>
 
@@ -149,10 +161,10 @@
           <div class="px-3 pt-1 pb-3 flex items-center justify-between border-b border-stone-100 text-xs font-semibold text-stone-500">
             <span class="flex items-center gap-1.5 text-brand-700">
               <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i>
-              Instant Sowing Feasibility & ML Suitability Calculator
+              <span id="calc-header-title">Instant Sowing Feasibility & ML Suitability Calculator</span>
             </span>
             <span class="hidden sm:inline text-emerald-600 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-circle-dot text-[9px] animate-ping"></i> Live Agmarknet + Open-Meteo Connected
+              <i class="fa-solid fa-circle-dot text-[9px] animate-ping"></i> <span id="calc-header-status">Live Agmarknet + Open-Meteo Connected</span>
             </span>
           </div>
 
@@ -162,7 +174,7 @@
             <div class="p-2.5 sm:p-3 rounded-2xl bg-stone-50/90 border border-stone-200 hover:border-brand-500 transition-colors">
               <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                 <i class="fa-solid fa-location-dot text-brand-600 text-xs"></i>
-                District / Location
+                <span id="lbl-district">District / Location</span>
               </label>
               <select id="district-select" class="w-full bg-transparent text-sm font-bold text-stone-800 focus:outline-none cursor-pointer">
                 <option value="Idukki" selected>Idukki (Highland)</option>
@@ -187,7 +199,7 @@
             <div class="p-2.5 sm:p-3 rounded-2xl bg-stone-50/90 border border-stone-200 hover:border-brand-500 transition-colors">
               <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                 <i class="fa-solid fa-layer-group text-amber-700 text-xs"></i>
-                Soil Type
+                <span id="lbl-soil">Soil Type</span>
               </label>
               <select id="soil-select" class="w-full bg-transparent text-sm font-bold text-stone-800 focus:outline-none cursor-pointer">
                 <option value="Hill soil" selected>Hill soil / Forest loam</option>
@@ -197,49 +209,47 @@
                 <option value="Alluvial soil">Alluvial soil</option>
                 <option value="Coastal sand">Coastal sand</option>
               </select>
-              <span class="text-[11px] text-stone-400 block mt-0.5">Soil Health Card Profile</span>
+              <span id="soil-subtitle" class="text-[11px] text-stone-400 block mt-0.5">Soil Health Card Profile</span>
             </div>
 
             <!-- Field 3: Intended Crop -->
             <div class="p-2.5 sm:p-3 rounded-2xl bg-stone-50/90 border border-stone-200 hover:border-brand-500 transition-colors">
               <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                 <i class="fa-solid fa-wheat-awn text-emerald-600 text-xs"></i>
-                Intended Crop
+                <span id="lbl-crop">Intended Crop</span>
               </label>
               <select id="crop-select" class="w-full bg-transparent text-sm font-bold text-stone-800 focus:outline-none cursor-pointer">
-                <option value="tomato" selected>Tomato (Vegetables)</option>
-                <option value="rice">Rice / Paddy (Cereals)</option>
-                <option value="banana">Banana (Fruits)</option>
-                <option value="cardamom">Cardamom (Spices)</option>
+                <option value="tomato" selected>Tomato (Vegetable)</option>
+                <option value="cardamom">Cardamom (Spices/Highland)</option>
                 <option value="black_pepper">Black Pepper (Spices)</option>
-                <option value="ginger">Ginger (Spices)</option>
-                <option value="tapioca">Tapioca (Tubers)</option>
-                <option value="okra">Okra / Bhindi (Vegetables)</option>
-                <option value="chilli">Chilli (Vegetables)</option>
+                <option value="ginger">Ginger (Rhizome/Spices)</option>
+                <option value="rice">Rice (Paddy/Cereals)</option>
+                <option value="banana">Banana (Plantain/Fruit)</option>
+                <option value="tapioca">Tapioca (Cassava/Tuber)</option>
+                <option value="okra">Okra (Bhindi/Vegetable)</option>
+                <option value="chilli">Chilli (Spicy/Vegetable)</option>
               </select>
-              <span class="text-[11px] text-stone-400 block mt-0.5">Target harvest goal</span>
+              <span id="crop-subtitle" class="text-[11px] text-stone-400 block mt-0.5">High-Yield KAU Approved</span>
             </div>
 
-            <!-- CTA Button -->
-            <div class="flex items-center">
-              <button type="submit" id="btn-get-advisory" class="w-full h-full min-h-[54px] bg-brand-600 hover:bg-brand-700 active:scale-[0.99] text-white font-bold text-sm lg:text-base rounded-2xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2.5 px-4 py-3">
-                <i class="fa-solid fa-seedling text-lg text-emerald-200"></i>
+            <!-- Field 4: Action Button -->
+            <div class="sm:col-span-3 lg:col-span-1 flex items-end">
+              <button type="submit" id="btn-get-advisory" class="w-full h-[58px] bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-2xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-compass"></i>
                 <span id="btn-advisory-text">Get Advisory</span>
               </button>
             </div>
 
-          </form>
-
-          <!-- Quick trend tags below tool -->
+          <!-- Quick Presets below tool -->
           <div class="mt-3 pt-2.5 px-2 flex flex-wrap items-center justify-between text-xs text-stone-500 border-t border-stone-100">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-stone-400 font-medium">Quick personas:</span>
+              <span id="presets-label" class="text-stone-400 font-medium">Quick Demo Scenarios:</span>
               <button type="button" onclick="setPreset('Idukki', 'tomato', 'Anil')" class="bg-stone-100 hover:bg-brand-50 hover:text-brand-700 text-stone-700 px-2.5 py-1 rounded-lg cursor-pointer transition font-medium">Anil (Idukki - Tomato)</button>
               <button type="button" onclick="setPreset('Palakkad', 'rice', 'Suresh')" class="bg-stone-100 hover:bg-brand-50 hover:text-brand-700 text-stone-700 px-2.5 py-1 rounded-lg cursor-pointer transition font-medium">Suresh (Palakkad - Paddy)</button>
               <button type="button" onclick="setPreset('Wayanad', 'black_pepper', 'Thomas')" class="bg-stone-100 hover:bg-brand-50 hover:text-brand-700 text-stone-700 px-2.5 py-1 rounded-lg cursor-pointer transition font-medium">Thomas (Wayanad - Pepper)</button>
             </div>
             <div class="text-brand-700 font-semibold flex items-center gap-1.5 mt-1 sm:mt-0">
-              <i class="fa-solid fa-cloud-bolt text-xs"></i> Real-time Open-Meteo & Mandi Live
+              <i class="fa-solid fa-cloud-bolt text-xs"></i> <span id="calc-footer-status">Real-time Open-Meteo & Mandi Live</span>
             </div>
           </div>
         </div>
@@ -260,21 +270,21 @@
             <i class="fa-solid fa-location-crosshairs"></i>
             <span id="crop-region-tag">TAILORED FOR IDUKKI AGRO-CLIMATIC ZONE</span>
           </div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          <h2 id="catalog-title" class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
             Recommended Crops &amp; Varieties
           </h2>
-          <p class="text-stone-600 mt-2 max-w-xl text-base">
+          <p id="catalog-desc" class="text-stone-600 mt-2 max-w-xl text-base">
             Curated selection of beginner-resilient crops with verified seed prices, certified KAU varieties, and machine learning suitability analysis.
           </p>
         </div>
 
         <!-- Filter tabs -->
         <div class="flex items-center gap-2 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0">
-          <button onclick="filterCrops('all', this)" class="crop-filter-btn bg-brand-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition">All Crops</button>
-          <button onclick="filterCrops('Vegetables', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition">Vegetables</button>
-          <button onclick="filterCrops('Spices', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition">Spices</button>
-          <button onclick="filterCrops('Cereals', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition">Cereals</button>
-          <button onclick="filterCrops('Fruits', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition">Fruits</button>
+          <button id="btn-filter-all" onclick="filterCrops('all', this)" class="crop-filter-btn bg-brand-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">All Crops</button>
+          <button id="btn-filter-veg" onclick="filterCrops('Vegetables', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Vegetables</button>
+          <button id="btn-filter-spices" onclick="filterCrops('Spices', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Spices</button>
+          <button id="btn-filter-cereals" onclick="filterCrops('Cereals', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Cereals</button>
+          <button id="btn-filter-fruits" onclick="filterCrops('Fruits', this)" class="crop-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Fruits</button>
         </div>
       </div>
 
@@ -293,15 +303,15 @@
           <div class="lg:col-span-5">
             <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-800 text-xs font-bold px-3.5 py-1.5 rounded-full mb-4">
               <i class="fa-solid fa-comments text-brand-600"></i>
-              <span>Farming in Plain Language</span>
+              <span id="ai-kicker">Farming in Plain Language</span>
             </div>
             
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight mb-4">
+            <h2 id="ai-heading" class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight mb-4">
               Got a farming question?<br>
-              <span class="text-brand-700">Ask your AI Copilot.</span>
+              <span id="ai-heading-sub" class="text-brand-700">Ask your AI Copilot.</span>
             </h2>
             
-            <p class="text-stone-600 text-base leading-relaxed mb-6">
+            <p id="ai-desc" class="text-stone-600 text-base leading-relaxed mb-6">
               Forget thick agronomy textbooks and confusing soil chemistry tables. FarmStart’s AI Copilot translates weather feeds, soil conditions, and mandi prices into plain-language advice with 3 clear action steps.
             </p>
 
@@ -312,8 +322,8 @@
                   <i class="fa-solid fa-check text-xs"></i>
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-stone-900">Zero Technical Jargon</h4>
-                  <p class="text-xs text-stone-500">Every recommendation is tailored for beginner and transitioning farmers.</p>
+                  <h4 id="feat-jargon-title" class="text-sm font-bold text-stone-900">Zero Technical Jargon</h4>
+                  <p id="feat-jargon-desc" class="text-xs text-stone-500">Every recommendation is tailored for beginner and transitioning farmers.</p>
                 </div>
               </div>
 
@@ -322,8 +332,8 @@
                   <i class="fa-solid fa-check text-xs"></i>
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-stone-900">Live Weather &amp; ML Context</h4>
-                  <p class="text-xs text-stone-500">Answers are informed by your active 7-day rainfall and soil pH levels.</p>
+                  <h4 id="feat-weather-title" class="text-sm font-bold text-stone-900">Live Weather &amp; ML Context</h4>
+                  <p id="feat-weather-desc" class="text-xs text-stone-500">Answers are informed by your active 7-day rainfall and soil pH levels.</p>
                 </div>
               </div>
 
@@ -332,18 +342,18 @@
                   <i class="fa-solid fa-check text-xs"></i>
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-stone-900">Fair Price Protection</h4>
-                  <p class="text-xs text-stone-500">Alerts you to official KSSDA rates so you don't overpay for seed inputs.</p>
+                  <h4 id="feat-price-title" class="text-sm font-bold text-stone-900">Fair Price Protection</h4>
+                  <p id="feat-price-desc" class="text-xs text-stone-500">Alerts you to official KSSDA rates so you don't overpay for seed inputs.</p>
                 </div>
               </div>
             </div>
 
             <div class="flex items-center gap-3">
               <a href="#advisory-tool" class="bg-brand-700 hover:bg-brand-800 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-md transition inline-flex items-center gap-2">
-                <span>Run Sowing Advisory</span>
+                <span id="btn-run-advisory-cta">Run Sowing Advisory</span>
                 <i class="fa-solid fa-arrow-up text-xs"></i>
               </a>
-              <span class="text-xs text-stone-500 font-medium">Powered by Groq Llama 3.3 70B</span>
+              <span class="text-xs text-stone-500 font-medium">Groq LPU AI</span>
             </div>
           </div>
 
@@ -362,15 +372,15 @@
                   </div>
                   <div>
                     <h4 class="text-sm font-bold flex items-center gap-2">
-                      FarmStart AI Copilot
-                      <span class="bg-brand-800 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Live Agent</span>
+                      <span id="chat-header-title">FarmStart AI Copilot</span>
+                      <span id="chat-badge-status" class="bg-brand-800 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Live Agent</span>
                     </h4>
                     <p id="chat-context-subtitle" class="text-[11px] text-stone-400">Context: Anil · Idukki, Kerala (Tomato)</p>
                   </div>
                 </div>
 
-                <button onclick="clearChat()" title="Reset conversation" class="text-stone-400 hover:text-white p-1.5 transition text-xs flex items-center gap-1">
-                  <i class="fa-solid fa-rotate-right"></i> Reset
+                <button onclick="clearChat()" title="Reset conversation" class="text-stone-400 hover:text-white p-1.5 transition text-xs flex items-center gap-1 cursor-pointer">
+                  <i class="fa-solid fa-rotate-right"></i> <span id="btn-reset-text">Reset</span>
                 </button>
               </div>
 
@@ -378,7 +388,7 @@
               <div id="chat-messages" class="p-6 space-y-4 bg-stone-50/60 flex-1 overflow-y-auto">
                 <!-- System Timestamp -->
                 <div class="text-center">
-                  <span class="text-[11px] font-semibold text-stone-400 bg-white px-3 py-1 rounded-full border border-stone-200/60 shadow-xs">
+                  <span id="chat-session-badge" class="text-[11px] font-semibold text-stone-400 bg-white px-3 py-1 rounded-full border border-stone-200/60 shadow-xs">
                     Live Session · AI Copilot Ready
                   </span>
                 </div>
@@ -389,7 +399,7 @@
                     <i class="fa-solid fa-leaf"></i>
                   </div>
                   <div class="bg-white rounded-2xl rounded-tl-none p-4 max-w-lg border border-stone-200/80 shadow-xs space-y-2">
-                    <p class="text-stone-700 text-xs sm:text-sm leading-relaxed">
+                    <p id="chat-greeting-text" class="text-stone-700 text-xs sm:text-sm leading-relaxed">
                       Hello! I'm your <strong>FarmStart Copilot</strong>. I'm connected to Kerala Agricultural University guidelines, real-time Open-Meteo weather forecasts, and Agmarknet seed benchmarks. What would you like to know about your field or crops today?
                     </p>
                   </div>
@@ -398,14 +408,14 @@
 
               <!-- Suggested follow-up prompt chips -->
               <div id="suggested-chips-container" class="px-4 py-2 bg-stone-100/80 border-t border-stone-200/80 flex items-center gap-2 overflow-x-auto text-[11px]">
-                <span class="text-stone-400 font-bold whitespace-nowrap">Suggested:</span>
-                <button onclick="sendQuickPrompt('Is it a good time to plant tomatoes here in Idukki?')" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium">
+                <span id="suggested-label" class="text-stone-400 font-bold whitespace-nowrap">Suggested:</span>
+                <button id="chip-1" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "Is it a good time to plant tomatoes here in Idukki?"
                 </button>
-                <button onclick="sendQuickPrompt('What is the fair price I should pay for tomato seeds?')" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium">
+                <button id="chip-2" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "What is the fair seed price?"
                 </button>
-                <button onclick="sendQuickPrompt('What subsidies can I get for vegetable farming in Kerala?')" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium">
+                <button id="chip-3" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "Subsidies in Kerala?"
                 </button>
               </div>
@@ -413,8 +423,8 @@
               <!-- Chat Input Bar -->
               <form id="chat-form" class="p-3 bg-white border-t border-stone-200 flex items-center gap-2">
                 <input type="text" id="chat-input" placeholder="Ask anything about sowing dates, seed prices, soil care, or weather..." class="flex-1 bg-stone-100 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand-500/30 font-medium">
-                <button type="submit" id="btn-chat-send" class="bg-brand-600 hover:bg-brand-700 text-white rounded-xl px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition active:scale-95">
-                  <span>Send</span>
+                <button type="submit" id="btn-chat-send" class="bg-brand-600 hover:bg-brand-700 text-white rounded-xl px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+                  <span id="btn-send-text">Send</span>
                   <i class="fa-solid fa-paper-plane text-xs"></i>
                 </button>
               </form>
@@ -438,33 +448,33 @@
           <div class="lg:col-span-8">
             <div class="inline-flex items-center gap-2 bg-emerald-500/30 border border-emerald-400/40 text-emerald-200 text-xs font-bold px-3.5 py-1.5 rounded-full mb-4">
               <i class="fa-solid fa-landmark"></i>
-              <span>Active Agricultural Grants &amp; Subsidies</span>
+              <span id="schemes-badge-text">Active Agricultural Grants &amp; Subsidies</span>
             </div>
             
-            <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight mb-3">Kerala Farmer Assistance &amp; Subsidies</h3>
+            <h3 id="schemes-heading" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight mb-3">Kerala Farmer Assistance &amp; Subsidies</h3>
             
-            <p class="text-stone-200 text-sm sm:text-base max-w-2xl leading-relaxed mb-6">
+            <p id="schemes-desc" class="text-stone-200 text-sm sm:text-base max-w-2xl leading-relaxed mb-6">
               New cultivators can claim up to <strong>₹30,000 per hectare for vegetable farming</strong>, subsidized certified seeds from KSSDA, and up to 50% capital subsidies for drip irrigation &amp; polyhouses under <strong>Subhiksha Keralam</strong> and <strong>State Horticulture Mission</strong>.
             </p>
 
             <div class="flex flex-wrap gap-4 sm:gap-6 text-xs text-stone-200 font-semibold">
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
-                <span>Subhiksha Keralam Mission</span>
+                <span id="scheme-item-1">Subhiksha Keralam Mission</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
-                <span>PM-KISAN ₹6,000 / Year</span>
+                <span id="scheme-item-2">PM-KISAN ₹6,000 / Year</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
-                <span>PMFBY 1.5% Premium Insurance</span>
+                <span id="scheme-item-3">PMFBY 1.5% Premium Insurance</span>
               </div>
             </div>
           </div>
 
           <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
-            <button onclick="openSchemesModal()" class="bg-white hover:bg-stone-100 text-brand-900 text-sm sm:text-base font-extrabold px-6 py-4 rounded-2xl text-center shadow-lg transition-all transform hover:-translate-y-0.5">
+            <button id="btn-view-schemes" onclick="openSchemesModal()" class="bg-white hover:bg-stone-100 text-brand-900 text-sm sm:text-base font-extrabold px-6 py-4 rounded-2xl text-center shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer">
               View All Eligible Schemes
             </button>
             <a href="https://aims.kerala.gov.in" target="_blank" class="bg-brand-900/60 hover:bg-brand-900/80 border border-white/20 text-stone-200 text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-2xl text-center transition">
@@ -482,10 +492,10 @@
     <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between pb-4 border-b border-stone-100">
         <div>
-          <h3 class="text-xl font-extrabold text-stone-900">Government Agricultural Schemes</h3>
-          <p class="text-xs text-stone-500">Subsidies available for new and smallholder farmers in Kerala</p>
+          <h3 id="modal-schemes-title" class="text-xl font-extrabold text-stone-900">Government Agricultural Schemes</h3>
+          <p id="modal-schemes-desc" class="text-xs text-stone-500">Subsidies available for new and smallholder farmers in Kerala</p>
         </div>
-        <button onclick="closeSchemesModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center transition">
+        <button onclick="closeSchemesModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center transition cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -548,6 +558,9 @@
   <script>
     const API_BASE = 'http://127.0.0.1:8000';
 
+    // Localization State (persisted in localStorage)
+    let currentLang = localStorage.getItem('farmstart_lang') || 'en';
+
     let currentFarmerName = 'Farmer';
     let currentDistrict = 'Idukki';
     let currentCrop = 'tomato';
@@ -559,8 +572,324 @@
     let currentWeatherSummary = 'Moderate rain, 23.5°C';
     let conversationHistory = [];
 
+    // ==========================================
+    // MULTILINGUAL (MALAYALAM / ENGLISH) I18N
+    // ==========================================
+    const TRANSLATIONS = {
+      elements: {
+        'nav-brand-sub': {
+          en: 'Kerala Agro Copilot',
+          ml: 'കേരള കാർഷിക സഹായി'
+        },
+        'nav-sowing': {
+          en: 'Sowing Feasibility',
+          ml: 'വിത്ത് വിത സാധ്യത'
+        },
+        'nav-crops': {
+          en: 'Crop Catalog',
+          ml: 'വിളകളുടെ പട്ടിക'
+        },
+        'nav-ai': {
+          en: 'AI Copilot',
+          ml: 'AI കാർഷിക സഹായി'
+        },
+        'nav-schemes': {
+          en: 'Govt Subsidies',
+          ml: 'സർക്കാർ സബ്‌സിഡികൾ'
+        },
+        'farmer-label-prefix': {
+          en: 'Farmer:',
+          ml: 'കർഷകൻ:'
+        },
+        'btn-check-now-text': {
+          en: 'Check Now',
+          ml: 'പരിശോധിക്കൂ'
+        },
+        'hero-badge-text': {
+          en: 'Kerala AI Agriculture Conclave 2026',
+          ml: 'കേരള AI അഗ്രികൾച്ചർ കോൺക്ലേവ് 2026'
+        },
+        'hero-headline': {
+          en: 'FarmStart: <span class="text-emerald-300 font-serif italic font-normal">Grow with Confidence.</span>',
+          ml: 'ഫാംസ്റ്റാർട്ട്: <span class="text-emerald-300 font-serif italic font-normal">ആത്മവിശ്വാസത്തോടെ കൃഷി ചെയ്യാം.</span>'
+        },
+        'hero-desc': {
+          en: 'Remove guesswork from your first season. Live weather forecasts, scikit-learn ML suitability scores, and fair seed price benchmarks.',
+          ml: 'നിങ്ങളുടെ ആദ്യ കൃഷി സീസണിലെ സംശയങ്ങൾ ഒഴിവാക്കുക. തത്സമയ കാലാവസ്ഥാ പ്രവചനം, മെഷീൻ ലേണിംഗ് വിള അനുയോജ്യത, വിപണിയിലെ വിത്ത് വില വിവരങ്ങൾ.'
+        },
+        'calc-header-title': {
+          en: 'Instant Sowing Feasibility & ML Suitability Calculator',
+          ml: 'തത്സമയ വിത സാധ്യത & AI വിള അനുയോജ്യതാ കാൽക്കുലേറ്റർ'
+        },
+        'calc-header-status': {
+          en: 'Live Agmarknet + Open-Meteo Connected',
+          ml: 'Agmarknet & Open-Meteo തത്സമയം ബന്ധിപ്പിച്ചു'
+        },
+        'lbl-district': {
+          en: 'District / Location',
+          ml: 'ജില്ല / സ്ഥലം'
+        },
+        'district-subtitle': {
+          en: 'Kerala Agro-Climatic Zone',
+          ml: 'കേരള കാർഷിക-കാലാവസ്ഥാ മേഖല'
+        },
+        'lbl-soil': {
+          en: 'Soil Type',
+          ml: 'മണ്ണിന്റെ തരം'
+        },
+        'soil-subtitle': {
+          en: 'Soil Health Card Profile',
+          ml: 'സോയിൽ ഹെൽത്ത് കാർഡ് പ്രൊഫൈൽ'
+        },
+        'lbl-crop': {
+          en: 'Intended Crop',
+          ml: 'കൃഷി ചെയ്യാൻ ഉദ്ദേശിക്കുന്ന വിള'
+        },
+        'crop-subtitle': {
+          en: 'High-Yield KAU Approved',
+          ml: 'കേരള കാർഷിക സർവ്വകലാശാല അംഗീകരിച്ചത്'
+        },
+        'btn-advisory-text': {
+          en: 'Get Advisory',
+          ml: 'മാർഗ്ഗനിർദ്ദേശം കാണുക'
+        },
+        'presets-label': {
+          en: 'Quick Demo Scenarios:',
+          ml: 'പെട്ടെന്നുള്ള ഉദാഹരണങ്ങൾ:'
+        },
+        'calc-footer-status': {
+          en: 'Real-time Open-Meteo & Mandi Live',
+          ml: 'തത്സമയ കാലാവസ്ഥ & വിപണി വില'
+        },
+        'catalog-title': {
+          en: 'Recommended Crops & Varieties',
+          ml: 'ശുപാർശ ചെയ്യുന്ന വിളകളും ഇനങ്ങളും'
+        },
+        'catalog-desc': {
+          en: 'Curated selection of beginner-resilient crops with verified seed prices, certified KAU varieties, and machine learning suitability analysis.',
+          ml: 'തുടക്കക്കാർക്ക് അനുയോജ്യമായ വിളകൾ, വിത്ത് വില വിവരങ്ങൾ, KAU സാക്ഷ്യപ്പെടുത്തിയ ഇനങ്ങൾ, AI അനുയോജ്യതാ വിശകലനം.'
+        },
+        'btn-filter-all': {
+          en: 'All Crops',
+          ml: 'എല്ലാ വിളകളും'
+        },
+        'btn-filter-veg': {
+          en: 'Vegetables',
+          ml: 'പച്ചക്കറികൾ'
+        },
+        'btn-filter-spices': {
+          en: 'Spices',
+          ml: 'സുഗന്ധവ്യഞ്ജനങ്ങൾ'
+        },
+        'btn-filter-cereals': {
+          en: 'Cereals',
+          ml: 'ധാന്യങ്ങൾ'
+        },
+        'btn-filter-fruits': {
+          en: 'Fruits',
+          ml: 'പഴങ്ങൾ'
+        },
+        'ai-kicker': {
+          en: 'Farming in Plain Language',
+          ml: 'ലളിതമായ ഭാഷയിൽ കൃഷി വിവരങ്ങൾ'
+        },
+        'ai-heading': {
+          en: 'Got a farming question?<br>\n              <span id="ai-heading-sub" class="text-brand-700">Ask your AI Copilot.</span>',
+          ml: 'കൃഷി സംബന്ധമായ സംശയങ്ങളുണ്ടോ?<br>\n              <span id="ai-heading-sub" class="text-brand-700">നിങ്ങളുടെ AI സഹായിയോട് ചോദിക്കൂ.</span>'
+        },
+        'ai-desc': {
+          en: 'Forget thick agronomy textbooks and confusing soil chemistry tables. FarmStart’s AI Copilot translates weather feeds, soil conditions, and mandi prices into plain-language advice with 3 clear action steps.',
+          ml: 'സങ്കീർണ്ണമായ കാർഷിക പുസ്തകങ്ങളും രാസപട്ടികകളും മറക്കൂ. കാലാവസ്ഥയും മണ്ണും വിപണി വിലയും മനസ്സിലാക്കി 3 ലളിതമായ നിർദ്ദേശങ്ങളിലൂടെ AI Copilot നിങ്ങളെ സഹായിക്കുന്നു.'
+        },
+        'feat-jargon-title': {
+          en: 'Zero Technical Jargon',
+          ml: 'സാങ്കേതിക പദങ്ങളില്ലാത്ത ലളിത ഭാഷ'
+        },
+        'feat-jargon-desc': {
+          en: 'Every recommendation is tailored for beginner and transitioning farmers.',
+          ml: 'പുതുതായി കൃഷി ആരംഭിക്കുന്നവർക്ക് അനുയോജ്യമായ നിർദ്ദേശങ്ങൾ.'
+        },
+        'feat-weather-title': {
+          en: 'Live Weather & ML Context',
+          ml: 'തത്സമയ കാലാവസ്ഥ & ML വിവരങ്ങൾ'
+        },
+        'feat-weather-desc': {
+          en: 'Answers are informed by your active 7-day rainfall and soil pH levels.',
+          ml: 'അടുത്ത 7 ദിവസത്തെ മഴയും മണ്ണിന്റെ ഗുണനിലവാരവും മുൻനിർത്തിയുള്ള വിവരങ്ങൾ.'
+        },
+        'feat-price-title': {
+          en: 'Fair Price Protection',
+          ml: 'ന്യായമായ വിത്ത് വില ഉറപ്പ്'
+        },
+        'feat-price-desc': {
+          en: 'Alerts you to official KSSDA rates so you don\'t overpay for seed inputs.',
+          ml: 'വിത്തുകൾക്ക് അധികവില നൽകാതിരിക്കാൻ KSSDA നിരക്കുകൾ ലഭ്യമാക്കുന്നു.'
+        },
+        'btn-run-advisory-cta': {
+          en: 'Run Sowing Advisory',
+          ml: 'വിത സാധ്യത പരിശോധിക്കൂ'
+        },
+        'chat-header-title': {
+          en: 'FarmStart AI Copilot',
+          ml: 'ഫാംസ്റ്റാർട്ട് AI കാർഷിക സഹായി'
+        },
+        'chat-badge-status': {
+          en: 'Live Agent',
+          ml: 'തത്സമയം ലഭ്യമാണ്'
+        },
+        'btn-reset-text': {
+          en: 'Reset',
+          ml: 'പുനഃക്രമീകരിക്കുക'
+        },
+        'chat-session-badge': {
+          en: 'Live Session · AI Copilot Ready',
+          ml: 'തത്സമയ സെഷൻ · AI സഹായി തയ്യാറാണ്'
+        },
+        'chat-greeting-text': {
+          en: 'Hello! I\'m your <strong>FarmStart Copilot</strong>. I\'m connected to Kerala Agricultural University guidelines, real-time Open-Meteo weather forecasts, and Agmarknet seed benchmarks. What would you like to know about your field or crops today?',
+          ml: 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ <strong>ഫാംസ്റ്റാർട്ട് AI സഹായി</strong>യാണ്. കേരള കാർഷിക സർവ്വകലാശാല നിർദ്ദേശങ്ങൾ, തത്സമയ കാലാവസ്ഥാ പ്രവചനങ്ങൾ, മാർക്കറ്റ് വിത്ത് വിലകൾ എന്നിവ അടിസ്ഥാനമാക്കി നിങ്ങളെ സഹായിക്കാൻ ഞാൻ സജ്ജനാണ്. നിങ്ങളുടെ കൃഷിയെക്കുറിച്ച് എന്താണ് അറിയേണ്ടത്?'
+        },
+        'suggested-label': {
+          en: 'Suggested:',
+          ml: 'ചോദിക്കാവുന്ന ചോദ്യങ്ങൾ:'
+        },
+        'chip-1': {
+          en: '"Is it a good time to plant tomatoes here in Idukki?"',
+          ml: '"ഇടുക്കിയിൽ ഇപ്പോൾ തക്കാളി നടാൻ പറ്റിയ സമയമാണോ?"'
+        },
+        'chip-2': {
+          en: '"What is the fair seed price?"',
+          ml: '"വിത്തിന്റെ ന്യായമായ വില എത്രയാണ്?"'
+        },
+        'chip-3': {
+          en: '"Subsidies in Kerala?"',
+          ml: '"കേരളത്തിലെ കാർഷിക സബ്‌സിഡികൾ ഏതൊക്കെയാണ്?"'
+        },
+        'btn-send-text': {
+          en: 'Send',
+          ml: 'ചോദിക്കൂ'
+        },
+        'schemes-badge-text': {
+          en: 'Active Agricultural Grants & Subsidies',
+          ml: 'നിലവിലെ കാർഷിക ഗ്രാന്റുകളും സബ്‌സിഡികളും'
+        },
+        'schemes-heading': {
+          en: 'Kerala Farmer Assistance & Subsidies',
+          ml: 'കേരള കർഷക സഹായ പദ്ധതികളും സബ്‌സിഡികളും'
+        },
+        'schemes-desc': {
+          en: 'New cultivators can claim up to <strong>₹30,000 per hectare for vegetable farming</strong>, subsidized certified seeds from KSSDA, and up to 50% capital subsidies for drip irrigation & polyhouses under <strong>Subhiksha Keralam</strong> and <strong>State Horticulture Mission</strong>.',
+          ml: 'പുതിയ കർഷകർക്ക് പച്ചക്കറി കൃഷിക്ക് ഹെക്ടറിന് ₹30,000 വരെ ധനസഹായം, KSSDA സബ്‌സിഡി വിത്തുകൾ, സുഭിക്ഷ കേരളം & ഹോർട്ടികൾച്ചർ മിഷൻ വഴി ഡ്രിപ്പ് ഇറിഗേഷനും പോളിഹൗസിനും 50% വരെ സബ്‌സിഡി.'
+        },
+        'scheme-item-1': {
+          en: 'Subhiksha Keralam Mission',
+          ml: 'സുഭിക്ഷ കേരളം മിഷൻ'
+        },
+        'scheme-item-2': {
+          en: 'PM-KISAN ₹6,000 / Year',
+          ml: 'പി.എം. കിസാൻ (പ്രതിവർഷം ₹6,000)'
+        },
+        'scheme-item-3': {
+          en: 'PMFBY 1.5% Premium Insurance',
+          ml: 'വിള ഇൻഷുറൻസ് (PMFBY 1.5% പ്രീമിയം)'
+        },
+        'btn-view-schemes': {
+          en: 'View All Eligible Schemes',
+          ml: 'എല്ലാ പദ്ധതികളും കാണുക'
+        },
+        'modal-schemes-title': {
+          en: 'Government Agricultural Schemes',
+          ml: 'സർക്കാർ കാർഷിക പദ്ധതികൾ'
+        },
+        'modal-schemes-desc': {
+          en: 'Subsidies available for new and smallholder farmers in Kerala',
+          ml: 'കേരളത്തിലെ ചെറുകിട-പുതിയ കർഷകർക്കുള്ള ധനസഹായ പദ്ധതികൾ'
+        }
+      },
+      crops: {
+        tomato: 'തക്കാളി (Tomato)',
+        rice: 'നെല്ല് (Paddy / Rice)',
+        banana: 'വാഴ (Banana / Plantain)',
+        cardamom: 'ഏലം (Cardamom)',
+        black_pepper: 'കുരുമുളക് (Black Pepper)',
+        ginger: 'ഇഞ്ചി (Ginger)',
+        tapioca: 'കപ്പ / മരച്ചീനി (Tapioca)',
+        okra: 'വെണ്ട (Okra / Lady Finger)',
+        chilli: 'പച്ചമുളക് (Green Chilli)'
+      },
+      categories: {
+        'Vegetables': 'പച്ചക്കറികൾ',
+        'Spices': 'സുഗന്ധവ്യഞ്ജനങ്ങൾ',
+        'Cereals': 'ധാന്യങ്ങൾ',
+        'Fruits': 'പഴങ്ങൾ',
+        'Tubers': 'കിഴങ്ങുവർഗ്ഗങ്ങൾ'
+      },
+      ratings: {
+        'High Suitability (Beginner Ready)': 'ഉയർന്ന അനുയോജ്യത (തുടക്കക്കാർക്ക് ഉത്തമം)',
+        'Moderate Suitability (Water Management)': 'മിതമായ അനുയോജ്യത (ജലപരിപാലനം ആവശ്യം)',
+        'Low / Amendments Needed': 'കുറഞ്ഞ അനുയോജ്യത (മണ്ണ് ക്രമീകരണം ആവശ്യം)'
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'ml' : 'en';
+      localStorage.setItem('farmstart_lang', currentLang);
+      applyLanguage(currentLang);
+    }
+
+    function applyLanguage(lang) {
+      document.body.classList.toggle('lang-ml', lang === 'ml');
+
+      // Update button text
+      const toggleLabel = document.getElementById('lang-toggle-label');
+      if (toggleLabel) {
+        toggleLabel.textContent = lang === 'ml' ? 'English' : 'മലയാളം';
+      }
+
+      // Update static translated elements
+      for (const [id, val] of Object.entries(TRANSLATIONS.elements)) {
+        const el = document.getElementById(id);
+        if (el && val[lang]) {
+          el.innerHTML = val[lang];
+        }
+      }
+
+      // Update inputs placeholder
+      const chatInput = document.getElementById('chat-input');
+      if (chatInput) {
+        chatInput.placeholder = lang === 'ml' 
+          ? 'വിത തീയതി, വിത്ത് വില, മണ്ണ് പരിചരണം, കാലാവസ്ഥ എന്നിവയെക്കുറിച്ച് ചോദിക്കൂ...'
+          : 'Ask anything about sowing dates, seed prices, soil care, or weather...';
+      }
+
+      const farmerInput = document.getElementById('farmer-name-input');
+      if (farmerInput) {
+        farmerInput.placeholder = lang === 'ml' ? 'നിങ്ങളുടെ പേര്' : 'Your Name';
+      }
+
+      // Update Document Title
+      document.title = lang === 'ml'
+        ? 'ഫാംസ്റ്റാർട്ട് — AI കാർഷിക സഹായി & വിള അനുയോജ്യതാ പ്ലാറ്റ്‌ഫോം'
+        : 'FarmStart — AI Agricultural Advisory & Crop Feasibility Platform';
+
+      // Update dynamic subtitles
+      updateChatContextSubtitle();
+
+      // Re-render crop catalog if already loaded
+      if (window.cropCatalogData) {
+        renderCropCards(window.cropCatalogData);
+      }
+
+      // Re-render advisory result if currently displayed
+      if (window.lastAdvisoryData) {
+        renderAdvisoryResult(window.lastAdvisoryData);
+      }
+    }
+
+
     // Initialize Page
     document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
       checkBackendHealth();
       loadDistricts();
       loadCropFit(currentDistrict);
@@ -683,9 +1012,14 @@
     }
 
     function updateChatContextSubtitle() {
-      const cropTitle = currentCrop.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
-      document.getElementById('chat-context-subtitle').textContent = 
-        `Context: ${currentFarmerName} · ${currentDistrict}, Kerala (${cropTitle})`;
+      const cropTitle = currentLang === 'ml' 
+        ? (TRANSLATIONS.crops[currentCrop] || currentCrop)
+        : currentCrop.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const prefix = currentLang === 'ml' ? 'വിവരം:' : 'Context:';
+      const el = document.getElementById('chat-context-subtitle');
+      if (el) {
+        el.textContent = `${prefix} ${currentFarmerName} · ${currentDistrict}, Kerala (${cropTitle})`;
+      }
     }
 
     function setPreset(district, crop, personaName = 'Farmer') {
@@ -748,31 +1082,59 @@
 
     // Render Advisory Result Dashboard Card
     function renderAdvisoryResult(data) {
+      window.lastAdvisoryData = data;
       const container = document.getElementById('advisory-result-container');
       const weather = data.weather_advisory;
       const ml = data.ml_suitability;
       const price = data.seed_price_benchmark;
       const forecast = weather.forecast_summary;
+      const isMl = currentLang === 'ml';
 
       // Status badge styling
       let statusColor = 'bg-emerald-600 text-white';
       let statusIcon = 'fa-circle-check';
-      let statusLabel = 'SAFE TO SOW NOW';
+      let statusLabel = isMl ? 'ഇപ്പോൾ വിതയ്ക്കാൻ സുരക്ഷിതമാണ്' : 'SAFE TO SOW NOW';
 
       if (weather.safety_status === 'CAUTION') {
         statusColor = 'bg-amber-500 text-white';
         statusIcon = 'fa-triangle-exclamation';
-        statusLabel = 'PROCEED WITH CAUTION';
+        statusLabel = isMl ? 'ശ്രദ്ധയോടെ മുന്നോട്ട് പോകുക' : 'PROCEED WITH CAUTION';
       } else if (weather.safety_status === 'NOT_RECOMMENDED') {
         statusColor = 'bg-rose-600 text-white';
         statusIcon = 'fa-circle-xmark';
-        statusLabel = 'SOWING NOT RECOMMENDED';
+        statusLabel = isMl ? 'ഇപ്പോൾ വിതയ്ക്കൽ ശുപാർശ ചെയ്യുന്നില്ല' : 'SOWING NOT RECOMMENDED';
       }
 
-      // Suitability badge color
+      // Suitability badge color & label
       let suitBadge = 'bg-emerald-100 text-emerald-800 border-emerald-300';
-      if (ml.suitability_category === 'Medium') suitBadge = 'bg-amber-100 text-amber-800 border-amber-300';
-      if (ml.suitability_category === 'Low') suitBadge = 'bg-rose-100 text-rose-800 border-rose-300';
+      let suitCategoryLabel = isMl ? 'ഉയർന്നത്' : ml.suitability_category;
+      if (ml.suitability_category === 'Medium') {
+        suitBadge = 'bg-amber-100 text-amber-800 border-amber-300';
+        suitCategoryLabel = isMl ? 'മിതമായത്' : ml.suitability_category;
+      }
+      if (ml.suitability_category === 'Low') {
+        suitBadge = 'bg-rose-100 text-rose-800 border-rose-300';
+        suitCategoryLabel = isMl ? 'കുറഞ്ഞത്' : ml.suitability_category;
+      }
+
+      const cropDisplayName = isMl ? (TRANSLATIONS.crops[data.farmer.crop] || data.farmer.crop) : data.farmer.crop.toUpperCase();
+      const zoneLabel = isMl ? `${currentDistrict} കാർഷിക മേഖല` : `${currentDistrict} Agro-Zone`;
+      const sowingFeasibilityLabel = isMl ? 'വിത അനുയോജ്യത' : 'Sowing Feasibility';
+      const windowTitle = isMl ? 'ശുപാർശ ചെയ്യുന്ന കാലയളവ്' : 'Recommended Window';
+      const mlScoreTitle = isMl ? 'AI വിള അനുയോജ്യതാ സ്കോർ' : 'Scikit-Learn ML Score';
+      const priceTitle = isMl ? 'ന്യായമായ വിത്ത് വില മാനദണ്ഡം' : 'Fair Seed Price Benchmark';
+      const priceRef = isMl ? 'KSSDA / e-NAM അടിസ്ഥാന നിരക്ക്' : 'KSSDA / e-NAM Reference';
+      const weatherHeader = isMl ? '7 ദിവസത്തെ തത്സമയ കാലാവസ്ഥാ പ്രവചനം (Open-Meteo)' : '7-Day Real-Time Meteorological Forecast (Open-Meteo)';
+      const avgTempLbl = isMl ? 'ശരാശരി താപനില' : 'AVG TEMP';
+      const rainLbl = isMl ? '7 ദിവസത്തെ മഴ' : '7-DAY RAINFALL';
+      const rainExp = isMl ? 'പ്രതീക്ഷിക്കുന്നത്' : 'Expected';
+      const rainProbLbl = isMl ? 'മഴ സാധ്യത' : 'RAIN PROBABILITY';
+      const peakChance = isMl ? 'പരമാവധി സാധ്യത' : 'Peak chance';
+      const humidityLbl = isMl ? 'വായു ഈർപ്പം' : 'RELATIVE HUMIDITY';
+      const moisture = isMl ? 'ഈർപ്പം' : 'Moisture';
+      const planTitle = isMl ? 'ഫീൽഡ് ആക്ഷൻ പ്ലാനും മുൻകരുതലുകളും' : 'Field Action Plan & Risk Precautions';
+      const copilotCta = isMl ? 'കൂടുതൽ വിവരങ്ങൾ വേണമെന്നുണ്ടോ? <strong>താഴെ AI കാർഷിക സഹായിയോട് ചോദിക്കൂ.</strong>' : 'Need step-by-step guidance? <strong>Ask the AI Copilot below.</strong>';
+      const askCopilotBtn = isMl ? 'ഈ ഫലത്തെക്കുറിച്ച് AI യോട് ചോദിക്കൂ' : 'Ask AI Copilot About This Result';
 
       container.innerHTML = `
         <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6">
@@ -781,12 +1143,12 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-stone-200 gap-4">
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-xs font-bold uppercase tracking-wider text-brand-700">${currentDistrict} Agro-Zone</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-700">${zoneLabel}</span>
                 <span class="text-stone-300">•</span>
                 <span class="text-xs font-semibold text-stone-500">${ml.soil_type}</span>
               </div>
               <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
-                ${data.farmer.crop.toUpperCase()} Sowing Feasibility
+                ${cropDisplayName} ${sowingFeasibilityLabel}
               </h2>
             </div>
 
@@ -801,26 +1163,26 @@
             
             <!-- Card 1: Sowing Window -->
             <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
-              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">Recommended Window</span>
+              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">${windowTitle}</span>
               <div class="text-lg font-extrabold text-stone-900">${weather.recommended_window.recommended_start} to ${weather.recommended_window.recommended_end}</div>
               <span class="text-xs text-brand-700 font-semibold block mt-1">${weather.recommended_window.season_name}</span>
             </div>
 
             <!-- Card 2: ML Suitability Score -->
             <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
-              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">Scikit-Learn ML Score</span>
+              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">${mlScoreTitle}</span>
               <div class="flex items-center gap-2">
                 <span class="text-2xl font-black text-stone-900">${ml.suitability_score}%</span>
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${suitBadge}">${ml.suitability_category}</span>
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${suitBadge}">${suitCategoryLabel}</span>
               </div>
               <span class="text-[11px] text-stone-500 block mt-1">${ml.yield_prediction}</span>
             </div>
 
             <!-- Card 3: Seed Price vs Mandi Price -->
             <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
-              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">Fair Seed Price Benchmark</span>
+              <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-1">${priceTitle}</span>
               <div class="text-lg font-extrabold text-stone-900">${price.range}</div>
-              <span class="text-[11px] text-emerald-700 font-bold block mt-1">KSSDA / e-NAM Reference</span>
+              <span class="text-[11px] text-emerald-700 font-bold block mt-1">${priceRef}</span>
             </div>
 
           </div>
@@ -830,30 +1192,30 @@
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
                 <i class="fa-solid fa-cloud-sun-rain text-emerald-600"></i>
-                7-Day Real-Time Meteorological Forecast (Open-Meteo)
+                ${weatherHeader}
               </span>
               <span class="text-[11px] text-stone-500 font-medium">${forecast.weather_condition}</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
               <div class="bg-white p-2.5 rounded-xl border border-stone-200">
-                <span class="text-stone-400 block text-[10px] font-bold">AVG TEMP</span>
+                <span class="text-stone-400 block text-[10px] font-bold">${avgTempLbl}</span>
                 <span class="font-extrabold text-stone-800 text-sm">${forecast.avg_temp_c}°C</span>
                 <span class="text-stone-400 text-[10px]"> (${forecast.min_temp_c}° - ${forecast.max_temp_c}°)</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-stone-200">
-                <span class="text-stone-400 block text-[10px] font-bold">7-DAY RAINFALL</span>
+                <span class="text-stone-400 block text-[10px] font-bold">${rainLbl}</span>
                 <span class="font-extrabold text-stone-800 text-sm">${forecast.total_rainfall_next_7d_mm} mm</span>
-                <span class="text-stone-400 text-[10px]"> Expected</span>
+                <span class="text-stone-400 text-[10px]"> ${rainExp}</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-stone-200">
-                <span class="text-stone-400 block text-[10px] font-bold">RAIN PROBABILITY</span>
+                <span class="text-stone-400 block text-[10px] font-bold">${rainProbLbl}</span>
                 <span class="font-extrabold text-stone-800 text-sm">${forecast.rain_probability_pct}%</span>
-                <span class="text-stone-400 text-[10px]"> Peak chance</span>
+                <span class="text-stone-400 text-[10px]"> ${peakChance}</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-stone-200">
-                <span class="text-stone-400 block text-[10px] font-bold">RELATIVE HUMIDITY</span>
+                <span class="text-stone-400 block text-[10px] font-bold">${humidityLbl}</span>
                 <span class="font-extrabold text-stone-800 text-sm">${forecast.humidity_avg_pct}%</span>
-                <span class="text-stone-400 text-[10px]"> Moisture</span>
+                <span class="text-stone-400 text-[10px]"> ${moisture}</span>
               </div>
             </div>
           </div>
@@ -861,7 +1223,7 @@
           <!-- Limiting Factors & Actionable Recommendations -->
           <div class="space-y-2">
             <h4 class="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-list-check text-brand-600"></i> Field Action Plan &amp; Risk Precautions
+              <i class="fa-solid fa-list-check text-brand-600"></i> ${planTitle}
             </h4>
             <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200 text-xs text-stone-700 space-y-2">
               <p class="font-semibold text-stone-900">${weather.advisory_notes}</p>
@@ -877,10 +1239,10 @@
           <!-- Bottom Action Bar -->
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-stone-100">
             <span class="text-xs text-stone-500">
-              Need step-by-step guidance? <strong>Ask the AI Copilot below.</strong>
+              ${copilotCta}
             </span>
-            <button onclick="askCopilotFromAdvisory('${data.farmer.crop}', '${currentDistrict}')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
-              <i class="fa-solid fa-comments"></i> Ask AI Copilot About This Result
+            <button onclick="askCopilotFromAdvisory('${data.farmer.crop}', '${currentDistrict}')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-comments"></i> ${askCopilotBtn}
             </button>
           </div>
 
@@ -951,6 +1313,11 @@
 
         const varietiesStr = (c.recommended_varieties || []).slice(0, 2).join(', ');
 
+        const displayName = currentLang === 'ml' ? (TRANSLATIONS.crops[c.crop_id] || c.name) : c.name;
+        const displayCategory = currentLang === 'ml' ? (TRANSLATIONS.categories[c.category] || c.category) : c.category;
+        const displayRating = currentLang === 'ml' ? (TRANSLATIONS.ratings[c.suitability_rating] || c.suitability_rating) : c.suitability_rating;
+        const btnText = currentLang === 'ml' ? 'വിത സാധ്യത പരിശോധിക്കൂ' : 'Check Sowing Feasibility';
+
         const card = document.createElement('div');
         card.className = 'bg-white rounded-3xl overflow-hidden border border-stone-200 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group';
         card.innerHTML = `
@@ -958,26 +1325,26 @@
             <img src="${img}" alt="${c.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <div class="absolute top-3 right-3 ${badgeColor} backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
               <i class="fa-solid ${badgeIcon} text-[10px]"></i>
-              <span>${c.suitability_rating}</span>
+              <span>${displayRating}</span>
             </div>
             <div class="absolute bottom-3 left-3 bg-stone-900/80 backdrop-blur-sm text-stone-100 text-[10px] font-semibold px-2.5 py-1 rounded-lg">
-              <i class="fa-regular fa-clock mr-1"></i> ${c.maturity_days || 'Seasonal'}
+              <i class="fa-regular fa-clock mr-1"></i> ${c.maturity_days || (currentLang === 'ml' ? 'സീസണൽ' : 'Seasonal')}
             </div>
           </div>
           <div class="p-5 flex-1 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold uppercase text-brand-600 tracking-wider">${c.category}</span>
+                <span class="text-xs font-bold uppercase text-brand-600 tracking-wider">${displayCategory}</span>
                 <span class="text-[11px] text-stone-400">${c.ideal_soil_types[0] || 'Loam'}</span>
               </div>
-              <h3 class="text-lg font-bold text-stone-900 leading-snug">${c.name}</h3>
+              <h3 class="text-lg font-bold text-stone-900 leading-snug">${displayName}</h3>
               <p class="text-stone-600 text-xs mt-1.5 line-clamp-2">${c.notes || c.sowing_season}</p>
               ${varietiesStr ? `<p class="text-[11px] text-brand-800 font-semibold mt-2"><i class="fa-solid fa-certificate text-emerald-600 mr-1"></i>KAU: ${varietiesStr}</p>` : ''}
             </div>
 
             <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
-              <button onclick="selectCropFromCard('${c.crop_id}')" class="text-xs font-bold text-brand-700 hover:text-brand-900 flex items-center gap-1">
-                <span>Check Sowing Feasibility</span>
+              <button onclick="selectCropFromCard('${c.crop_id}')" class="text-xs font-bold text-brand-700 hover:text-brand-900 flex items-center gap-1 cursor-pointer">
+                <span>${btnText}</span>
                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
               </button>
             </div>
@@ -1019,9 +1386,13 @@
       appendUserMessage(userQuestion);
       const loadingId = appendLoadingIndicator();
 
+      const backendQuestion = currentLang === 'ml'
+        ? `${userQuestion} (ദയവായി ലളിതമായ മലയാളത്തിൽ 3 വ്യക്തമായ നിർദ്ദേശങ്ങളോടെ മറുപടി നൽകുക)`
+        : userQuestion;
+
       const payload = {
         farmer_name: currentFarmerName,
-        question: userQuestion,
+        question: backendQuestion,
         conversation_history: conversationHistory,
         context: {
           district: currentDistrict,
@@ -1054,10 +1425,13 @@
 
       } catch (err) {
         removeLoadingIndicator(loadingId);
+        const errMsg = currentLang === 'ml' 
+          ? 'ക്ഷമിക്കണം, AI സെർവറുമായി ബന്ധപ്പെടാൻ സാധിക്കുന്നില്ല. backend പ്രവർത്തിക്കുന്നുണ്ടോ എന്ന് ദയവായി പരിശോധിക്കുക.'
+          : `I apologize, I am temporarily having trouble reaching the Groq reasoning engine. Please ensure your backend is active at ${API_BASE}.`;
         appendAiMessage(
-          `I apologize, I am temporarily having trouble reaching the Groq reasoning engine. Please ensure your backend is active at ${API_BASE}.`,
-          ['Check backend logs', 'Verify Groq API Key in .env'],
-          ['Is it safe to plant now?', 'What are the current seed prices?']
+          errMsg,
+          currentLang === 'ml' ? ['സെർവർ ലോഗുകൾ പരിശോധിക്കുക', '.env ഫയലിലെ Groq API Key പരിശോധിക്കുക'] : ['Check backend logs', 'Verify Groq API Key in .env'],
+          currentLang === 'ml' ? ['ഇപ്പോൾ നടാൻ പറ്റിയ സമയമാണോ?', 'വിത്തിന്റെ വില എത്രയാണ്?'] : ['Is it safe to plant now?', 'What are the current seed prices?']
         );
       }
     }
@@ -1094,7 +1468,7 @@
         </div>
         <div class="bg-white rounded-2xl rounded-tl-none p-3.5 max-w-lg border border-stone-200/80 shadow-xs flex items-center gap-2 text-stone-400 text-xs font-semibold">
           <i class="fa-solid fa-circle-notch fa-spin text-brand-600"></i>
-          <span>Consulting agricultural model &amp; weather forecast...</span>
+          <span>${currentLang === 'ml' ? 'കാർഷിക മോഡലും കാലാവസ്ഥാ പ്രവചനവും വിശകലനം ചെയ്യുന്നു...' : 'Consulting agricultural model &amp; weather forecast...'}</span>
         </div>
       `;
       container.appendChild(msg);
@@ -1116,7 +1490,7 @@
           <div class="bg-stone-50 rounded-xl p-3 border border-stone-200 text-xs space-y-1.5 mt-2">
             <div class="font-bold text-stone-900 flex items-center gap-1.5">
               <i class="fa-solid fa-clipboard-list text-brand-600"></i>
-              Actionable Recommendations:
+              ${currentLang === 'ml' ? 'പ്രായോഗിക നിർദ്ദേശങ്ങൾ:' : 'Actionable Recommendations:'}
             </div>
             <div class="space-y-1 text-stone-600 pl-1">
               ${tips.map(t => `<div class="flex items-start gap-1.5"><span class="text-emerald-600 font-bold">•</span><span>${escapeHtml(t)}</span></div>`).join('')}
