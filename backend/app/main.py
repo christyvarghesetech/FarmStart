@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import Base, engine, get_db
-from app.routers import advisory_router, suitability_router, prices_router, schemes_router
+from app.routers import advisory_router, suitability_router, prices_router, schemes_router, pest_advisory_router
 from app.services.ml_service import get_model, score_crop_suitability
 from app.services.weather_service import get_weather_forecast
 from app.services.sowing_service import evaluate_sowing_advisory
@@ -55,6 +55,7 @@ app.include_router(advisory_router)
 app.include_router(suitability_router)
 app.include_router(prices_router)
 app.include_router(schemes_router)
+app.include_router(pest_advisory_router)
 
 # Mount frontend UI if available
 _frontend_candidates = [

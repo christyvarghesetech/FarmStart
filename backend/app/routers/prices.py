@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models import SeedPrice, Crop, SoilRegion
 from app.schemas.prices import SeedPriceResponse, CropFitResponse, CropFitItem, LiveMarketPriceResponse
 from app.services.price_service import get_comprehensive_price_data
+from app.services.mandi_predictor import get_harvest_price_prediction
 from app.data.seed_data import KERALA_DISTRICTS
 
 router = APIRouter(tags=["Seed Prices & Crop Fit"])
@@ -150,3 +151,19 @@ def get_crop_fit(
         "climate_zone": climate_zone,
         "suitable_crops": fit_items
     }
+
+
+@router.get(
+    "/harvest-price-predictor",
+    summary="30-day wholesale mandi price forecast and cold storage economics"
+)
+async def get_harvest_predictor(
+    crop: str = Query("tomato", description="Crop name (e.g. tomato, rice, cardamom, banana)"),
+    district: Optional[str] = Query("Idukki", description="District in Kerala")
+):
+    """
+    Returns 30-day continuous price trajectory (15-day historical + 14-day projection),
+    Kerala APMC comparative mandi heatmap, and cold storage vs. fresh sell economic recommendation.
+    """
+    return get_harvest_price_prediction(crop=crop, district=district)
+

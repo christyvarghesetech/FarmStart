@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -88,16 +89,21 @@
       </a>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-stone-700">
-        <a href="#advisory-tool" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
+      <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-sm font-semibold text-stone-700 whitespace-nowrap">
+        <a href="#advisory-tool" class="hover:text-brand-600 transition-colors">
           <span id="nav-sowing">Sowing Advisory</span>
         </a>
-        <a href="#crops" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
+        <a href="#crops" class="hover:text-brand-600 transition-colors">
           <span id="nav-catalog">Crop Catalog</span>
         </a>
-        <a href="#ai-assistant" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
-          <span id="nav-ai">AI Companion</span>
-          <span class="bg-brand-100 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Groq AI</span>
+        <a href="#ai-assistant" class="hover:text-brand-600 transition-colors">
+          <span id="nav-ai">AI Copilot</span>
+        </a>
+        <a href="#harvest-predictor" class="hover:text-brand-600 transition-colors">
+          <span id="nav-mandi">Mandi Trends</span>
+        </a>
+        <a href="#pest-advisory" class="hover:text-brand-600 transition-colors">
+          <span id="nav-pests">Pest Control</span>
         </a>
         <a href="#schemes" class="hover:text-brand-600 transition-colors">
           <span id="nav-schemes">Govt Subsidies</span>
@@ -257,6 +263,179 @@
         <!-- Dynamic Advisory Result Card (Appears after calculation) -->
         <div id="advisory-result-container" class="hidden mt-8 max-w-4xl mx-auto text-left transition-all duration-500">
           <!-- Populated via JavaScript -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Harvest Price Predictor & Mandi Heatmap Section -->
+    <section id="harvest-predictor" class="max-w-7xl mx-auto px-6 lg:px-10 mb-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-stone-200">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between pb-8 border-b border-stone-100 gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-emerald-50 text-emerald-800 text-xs font-bold px-3.5 py-1.5 rounded-full mb-3 border border-emerald-200">
+              <i class="fa-solid fa-chart-line text-emerald-600"></i>
+              <span id="pred-badge-text">Kerala APMC Mandi Intelligence &amp; AI Forecast</span>
+            </div>
+            <h2 id="pred-section-title" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+              Harvest Price Predictor &amp; Mandi Heatmap
+            </h2>
+            <p id="pred-section-desc" class="text-stone-600 text-sm sm:text-base max-w-2xl mt-2 leading-relaxed">
+              30-day commodity price trajectory across Kerala wholesale markets. AI evaluates real-time storage economics to advise whether to sell fresh or hold in cold storage.
+            </p>
+          </div>
+
+          <!-- Dynamic Active Crop & District Pill -->
+          <div class="flex items-center gap-3 bg-stone-50 px-4 py-2.5 rounded-2xl border border-stone-200 shadow-xs">
+            <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white text-base shadow-sm">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block" id="pred-active-label">Active Commodity</span>
+              <span class="text-sm font-extrabold text-brand-800" id="pred-active-crop">Tomato (Idukki)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Recommendation Banner (Sell Fresh vs Hold) -->
+        <div id="pred-recommendation-card" class="mt-8 p-6 rounded-2xl bg-stone-50/80 border border-stone-200/90 shadow-sm transition-all duration-300">
+          <div class="py-6 text-center text-stone-400">
+            <i class="fa-solid fa-spinner fa-spin text-xl text-brand-600"></i>
+            <p class="text-xs mt-2">Analyzing market supply &amp; cold storage economics...</p>
+          </div>
+        </div>
+
+        <!-- Main Content: Chart (Left) + Mandi Heatmap (Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8 items-start">
+          
+          <!-- Left Column: 30-Day Trend Chart (7 cols) -->
+          <div class="lg:col-span-7 bg-stone-50/60 p-5 sm:p-6 rounded-2xl border border-stone-200 flex flex-col shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-stone-200/80 gap-2">
+              <div>
+                <h3 id="pred-chart-title" class="text-base font-extrabold text-stone-900 flex items-center gap-2">
+                  <i class="fa-solid fa-wave-square text-emerald-600"></i>
+                  30-Day Price Trajectory (₹ / kg)
+                </h3>
+                <span id="pred-chart-sub" class="text-xs text-stone-500">Past 15 Days Actuals + Next 14 Days AI Projected Outlook</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs font-semibold">
+                <span class="inline-flex items-center gap-1.5 text-emerald-700">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                  <span id="pred-legend-actual">Actuals</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-indigo-700">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                  <span id="pred-legend-projected">AI Forecast</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative w-full h-[280px] sm:h-[320px]">
+              <canvas id="harvestPriceChart"></canvas>
+            </div>
+
+            <!-- Chart Footer Note -->
+            <div class="pt-3 mt-2 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-500 gap-2">
+              <span id="pred-chart-footer">Source: e-NAM &amp; Agmarknet Kerala Daily Wholesale Index</span>
+              <span class="text-emerald-700 font-bold" id="pred-chart-today-badge">Today: Fetching...</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Kerala Mandi Heatmap (5 cols) -->
+          <div class="lg:col-span-5 bg-stone-50/60 p-5 sm:p-6 rounded-2xl border border-stone-200 flex flex-col shadow-xs">
+            <div class="pb-4 mb-3 border-b border-stone-200/80 flex items-center justify-between">
+              <div>
+                <h3 id="pred-heatmap-title" class="text-base font-extrabold text-stone-900 flex items-center gap-2">
+                  <i class="fa-solid fa-fire text-rose-600"></i>
+                  Kerala Wholesale Mandi Heatmap
+                </h3>
+                <span id="pred-heatmap-sub" class="text-xs text-stone-500">Net price after regional transport</span>
+              </div>
+              <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-200 uppercase" id="pred-heatmap-badge">Live Rates</span>
+            </div>
+
+            <!-- Mandi List Container -->
+            <div id="mandi-heatmap-list" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+              <div class="py-6 text-center text-stone-400">
+                <i class="fa-solid fa-spinner fa-spin text-lg text-emerald-400"></i>
+                <p class="text-xs mt-1">Comparing prices across Kerala APMC mandis...</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Pest & Disease Intelligence & Organic Control Section -->
+    <section id="pest-advisory" class="max-w-7xl mx-auto px-6 lg:px-10 mb-24">
+      <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-stone-200">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between pb-8 border-b border-stone-100 gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-rose-50 text-rose-800 text-xs font-bold px-3.5 py-1.5 rounded-full mb-3 border border-rose-200">
+              <i class="fa-solid fa-shield-virus text-rose-600"></i>
+              <span id="pest-badge-text">KAU-Approved Integrated Pest Management (IPM)</span>
+            </div>
+            <h2 id="pest-section-title" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-stone-900">
+              Pest &amp; Disease Intelligence &amp; Organic Control
+            </h2>
+            <p id="pest-section-desc" class="text-stone-600 text-sm sm:text-base max-w-2xl mt-2 leading-relaxed">
+              Anticipate crop threats before they cause damage. Live weather-triggered alerts, symptom checklists, and dual-track (Organic Bio-Remedy vs. Chemical) solutions.
+            </p>
+          </div>
+
+          <!-- Active Threat Count Pill -->
+          <div class="flex items-center gap-3 bg-stone-50 px-4 py-2.5 rounded-2xl border border-stone-200 shadow-xs">
+            <div class="w-10 h-10 rounded-xl bg-rose-600 flex items-center justify-center text-white text-base shadow-sm">
+              <i class="fa-solid fa-bug"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider block" id="pest-threat-status-label">Threat Level</span>
+              <span class="text-sm font-extrabold text-stone-900" id="pest-threat-count-pill">Analyzing Threats...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Meteorological Risk Banner -->
+        <div id="pest-weather-risk-banner" class="mt-8 p-5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 transition-all duration-300">
+          <div class="flex items-start gap-3.5">
+            <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 text-base shadow-xs">
+              <i class="fa-solid fa-cloud-bolt"></i>
+            </div>
+            <div class="flex-1 text-xs sm:text-sm">
+              <div class="flex items-center gap-2 mb-0.5 flex-wrap">
+                <span class="font-extrabold text-amber-950 text-sm sm:text-base" id="pest-risk-headline">Loading meteorological trigger analysis...</span>
+              </div>
+              <p class="text-amber-800 leading-relaxed text-xs mt-1" id="pest-risk-advice">Checking humidity and rainfall parameters for potential fungal spore dispersal.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Symptom Filter Tabs -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-8 pb-4 border-b border-stone-100">
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+            <button id="btn-pest-all" onclick="filterPestCards('all', this)" class="pest-filter-btn bg-brand-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer">All Pests &amp; Diseases</button>
+            <button id="btn-pest-leaf" onclick="filterPestCards('leaf', this)" class="pest-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Leaf Symptoms</button>
+            <button id="btn-pest-fruit" onclick="filterPestCards('fruit', this)" class="pest-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Fruit / Pod Damage</button>
+            <button id="btn-pest-stem" onclick="filterPestCards('stem', this)" class="pest-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer">Stem &amp; Wilt Rot</button>
+          </div>
+          <span class="text-xs text-stone-400 font-semibold" id="pest-crop-filter-tag">Tailored for Tomato in Idukki</span>
+        </div>
+
+        <!-- Pest & Disease Cards Grid -->
+        <div id="pest-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <div class="col-span-full py-12 text-center text-stone-400">
+            <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand-600"></i>
+            <p class="text-xs font-semibold">Loading KAU pest &amp; disease diagnostics...</p>
+          </div>
         </div>
 
       </div>
@@ -549,7 +728,6 @@
 
       <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
         <p>© 2026 FarmStart - New Farmer Copilot. Built for AI Conclave 2026.</p>
-        <p class="text-emerald-400 font-semibold">Backend Live: http://127.0.0.1:8000</p>
       </div>
     </div>
   </footer>
@@ -577,6 +755,90 @@
     // ==========================================
     const TRANSLATIONS = {
       elements: {
+                'nav-mandi': {
+          en: 'Mandi Trends',
+          ml: 'വിപണി നിരക്കുകൾ'
+        },
+        'pred-badge-text': {
+          en: 'Kerala APMC Mandi Intelligence & AI Forecast',
+          ml: 'കേരള APMC വിപണി & AI പ്രവചനം'
+        },
+        'pred-section-title': {
+          en: 'Harvest Price Predictor & Mandi Heatmap',
+          ml: 'വിളവെടുപ്പ് വിപണി വില പ്രവചനവും മണ്ഡി ഹീറ്റ്‌മാപ്പും'
+        },
+        'pred-section-desc': {
+          en: '30-day commodity price trajectory across Kerala wholesale markets. AI evaluates real-time storage economics to advise whether to sell fresh or hold in cold storage.',
+          ml: 'കേരളത്തിലെ പ്രധാന മൊത്തവ്യാപാര വിപണികളിലെ 30 ദിവസത്തെ വില പ്രവണത. ഉൽപ്പന്നം ഇപ്പോൾ വിൽക്കണമോ അതോ കോൾഡ് സ്റ്റോറേജിൽ സൂക്ഷിക്കണമോ എന്ന് AI വിലയിരുത്തുന്നു.'
+        },
+        'pred-active-label': {
+          en: 'Active Commodity',
+          ml: 'തിരഞ്ഞെടുത്ത വിള'
+        },
+        'pred-chart-title': {
+          en: '<i class="fa-solid fa-wave-square text-emerald-400"></i> 30-Day Price Trajectory (₹ / kg)',
+          ml: '<i class="fa-solid fa-wave-square text-emerald-400"></i> 30 ദിവസത്തെ വില പ്രവണത (₹ / കിലോ)'
+        },
+        'pred-chart-sub': {
+          en: 'Past 15 Days Actuals + Next 14 Days AI Projected Outlook',
+          ml: 'കഴിഞ്ഞ 15 ദിവസത്തെ നിരക്കും അടുത്ത 14 ദിവസത്തെ AI പ്രവചനവും'
+        },
+        'pred-legend-actual': {
+          en: 'Actuals',
+          ml: 'കഴിഞ്ഞ നിരക്ക്'
+        },
+        'pred-legend-projected': {
+          en: 'AI Forecast',
+          ml: 'പ്രതീക്ഷിക്കുന്ന നിരക്ക്'
+        },
+        'pred-chart-footer': {
+          en: 'Source: e-NAM & Agmarknet Kerala Daily Wholesale Index',
+          ml: 'ഉറവിടം: e-NAM & Agmarknet കേരള മാർക്കറ്റ് സൂചിക'
+        },
+        'pred-heatmap-title': {
+          en: '<i class="fa-solid fa-fire text-rose-400"></i> Kerala Wholesale Mandi Heatmap',
+          ml: '<i class="fa-solid fa-fire text-rose-400"></i> കേരള മൊത്തവ്യാപാര മണ്ഡി ഹീറ്റ്‌മാപ്പ്'
+        },
+        'pred-heatmap-sub': {
+          en: 'Net price after regional transport',
+          ml: 'യാത്രാച്ചെലവ് കിഴിച്ചുള്ള യഥാർത്ഥ വരുമാനം'
+        },
+                'nav-pests': {
+          en: 'Pest Control',
+          ml: 'കീടനിയന്ത്രണം'
+        },
+        'pest-badge-text': {
+          en: 'KAU-Approved Integrated Pest Management (IPM)',
+          ml: 'കേരള കാർഷിക സർവ്വകലാശാല അംഗീകൃത കീടനിയന്ത്രണം'
+        },
+        'pest-section-title': {
+          en: 'Pest &amp; Disease Intelligence &amp; Organic Control',
+          ml: 'കീട-രോഗ നിയന്ത്രണ സഹായി'
+        },
+        'pest-section-desc': {
+          en: 'Anticipate crop threats before they cause damage. Live weather-triggered alerts, symptom checklists, and dual-track (Organic Bio-Remedy vs. Chemical) solutions.',
+          ml: 'വിളനാശം സംഭവിക്കുന്നതിന് മുൻപ് തന്നെ കീട-രോഗ സാധ്യതകൾ തിരിച്ചറിയുക. തത്സമയ കാലാവസ്ഥാ മുന്നറിയിപ്പുകൾ, ലക്ഷണങ്ങൾ, ജൈവ കീടനിയന്ത്രണ മാർഗ്ഗങ്ങൾ.'
+        },
+        'pest-threat-status-label': {
+          en: 'Threat Level',
+          ml: 'ഭീഷണി നില'
+        },
+        'btn-pest-all': {
+          en: 'All Pests &amp; Diseases',
+          ml: 'എല്ലാ കീടങ്ങളും രോഗങ്ങളും'
+        },
+        'btn-pest-leaf': {
+          en: 'Leaf Symptoms',
+          ml: 'ഇല രോഗങ്ങൾ'
+        },
+        'btn-pest-fruit': {
+          en: 'Fruit / Pod Damage',
+          ml: 'കായ്/തണ്ട് രോഗങ്ങൾ'
+        },
+        'btn-pest-stem': {
+          en: 'Stem &amp; Wilt Rot',
+          ml: 'വേരുചീയൽ/വാട്ടരോഗം'
+        },
         'nav-brand-sub': {
           en: 'Kerala Agro Copilot',
           ml: 'കേരള കാർഷിക സഹായി'
@@ -884,13 +1146,562 @@
       if (window.lastAdvisoryData) {
         renderAdvisoryResult(window.lastAdvisoryData);
       }
+      if (currentPredictorData) {
+        renderHarvestPredictor(currentPredictorData);
+      }
+      if (currentPestData) {
+        renderPestAdvisory(currentPestData);
+      }
     }
 
+
+    
+    // Global variable for Chart instance
+    let harvestPriceChartInstance = null;
+    let currentPredictorData = null;
+
+    // Load Harvest Price Prediction & Mandi Heatmap from Backend
+    async function loadHarvestPredictor(crop, district) {
+      try {
+        const res = await fetch(`${API_BASE}/harvest-price-predictor?crop=${encodeURIComponent(crop)}&district=${encodeURIComponent(district)}`);
+        if (!res.ok) throw new Error('Failed to load harvest price predictions');
+        const data = await res.json();
+        currentPredictorData = data;
+        renderHarvestPredictor(data);
+      } catch (err) {
+        console.warn('Could not load harvest price prediction:', err);
+      }
+    }
+
+    function renderHarvestPredictor(data) {
+      if (!data) return;
+      const isMl = currentLang === 'ml';
+      const cropName = isMl ? (TRANSLATIONS.crops[data.crop_id] || data.crop) : data.crop;
+      
+      // Update active commodity pill
+      const activeEl = document.getElementById('pred-active-crop');
+      if (activeEl) {
+        activeEl.textContent = `${cropName} (${data.district})`;
+      }
+
+      // 1. Render Storage Recommendation Banner
+      renderStorageRecommendation(data.storage_recommendation, data.crop, data.district);
+
+      // 2. Render 30-Day Trend Chart
+      renderPriceChart(data.price_trend_30d, data.current_price_per_kg);
+
+      // 3. Render Mandi Heatmap List
+      renderMandiHeatmap(data.mandi_heatmap, data.current_price_per_kg);
+    }
+
+    function renderStorageRecommendation(rec, crop, district) {
+      const container = document.getElementById('pred-recommendation-card');
+      if (!container || !rec) return;
+      const isMl = currentLang === 'ml';
+
+      let decisionTitle = rec.decision_label;
+      let decisionSub = rec.decision_sub;
+      let holdingTip = rec.holding_tip;
+
+      if (isMl) {
+        if (rec.decision === 'HOLD_COLD_STORAGE') {
+          decisionTitle = 'കോൾഡ് സ്റ്റോറേജിൽ സൂക്ഷിക്കുക (HOLD IN STORAGE)';
+          decisionSub = `${rec.hold_duration_days} ദിവസത്തേക്ക് സൂക്ഷിക്കുന്നത് കൂടുതൽ ലാഭം നൽകും. വിപണിയിൽ വില ഉയരാൻ സാധ്യതയുണ്ട്.`;
+        } else if (rec.decision === 'SPLIT_SALE') {
+          decisionTitle = 'പകുതി വിൽക്കുക, പകുതി സൂക്ഷിക്കുക (SPLIT SALE)';
+          decisionSub = 'പകുതി വിളവ് ഇപ്പോൾ വിൽക്കുക; ശേഷിക്കുന്നത് വിലക്കയറ്റത്തിനായി സൂക്ഷിക്കുക.';
+        } else {
+          decisionTitle = 'ഉടൻ തന്നെ പച്ചയായി വിൽക്കുക (SELL FRESH)';
+          decisionSub = 'അളവ് കുറയാനുള്ള സാധ്യതയും സ്റ്റോറേജ് വാടകയും കണക്കിലെടുക്കുമ്പോൾ ഉടൻ വിൽക്കുന്നതാണ് ഉചിതം.';
+        }
+      }
+
+      const roiSign = rec.net_roi_pct >= 0 ? '+' : '';
+      const gainSign = rec.net_holding_gain_per_kg >= 0 ? '+' : '';
+      const roiColor = rec.net_roi_pct >= 0 ? 'text-emerald-700' : 'text-rose-700';
+
+      container.innerHTML = `
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-stone-200">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl ${rec.badge_color} flex items-center justify-center text-xl shadow-md flex-shrink-0">
+              <i class="fa-solid ${rec.icon}"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-200 text-stone-700">
+                  ${isMl ? 'വിപണി ശുപാർശ' : 'AI Economic Verdict'}
+                </span>
+                <span class="text-xs text-stone-300">•</span>
+                <span class="text-xs font-semibold text-stone-500">${rec.perishability_grade} ${isMl ? 'നശീകരണ സാധ്യത' : 'Perishability'}</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">${decisionTitle}</h3>
+              <p class="text-xs sm:text-sm text-stone-600 mt-1 leading-relaxed">${decisionSub}</p>
+            </div>
+          </div>
+
+          <!-- Net ROI Badge -->
+          <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center gap-4 flex-shrink-0">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
+                ${isMl ? 'പ്രതീക്ഷിക്കുന്ന അറ്റാദായം' : 'Projected 14d Net ROI'}
+              </span>
+              <div class="text-2xl font-black ${roiColor}">
+                ${roiSign}${rec.net_roi_pct}%
+              </div>
+            </div>
+            <div class="border-l border-stone-200 pl-4 text-xs text-stone-500">
+              <div><strong class="text-stone-800">${gainSign}₹${rec.net_holding_gain_per_kg}</strong> / kg</div>
+              <div class="text-[10px] text-stone-400 mt-0.5">${isMl ? 'വാടക കഴിഞ്ഞ്' : 'After storage fee'}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Stat Metric Strip -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 text-xs">
+          <div class="bg-white p-3 rounded-xl border border-stone-200/90 shadow-xs">
+            <span class="text-stone-400 text-[10px] uppercase font-bold block">${isMl ? 'ഇന്നത്തെ വില' : 'Today Wholesale'}</span>
+            <span class="text-base font-extrabold text-stone-900 mt-0.5 block">₹${rec.current_price_per_kg.toFixed(2)}<span class="text-[10px] text-stone-400">/kg</span></span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-stone-200/90 shadow-xs">
+            <span class="text-stone-400 text-[10px] uppercase font-bold block">${isMl ? '14-ാം ദിന പ്രവചനം' : '14-Day Projection'}</span>
+            <span class="text-base font-extrabold text-indigo-700 mt-0.5 block">₹${rec.predicted_price_per_kg.toFixed(2)}<span class="text-[10px] text-stone-400">/kg</span></span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-stone-200/90 shadow-xs">
+            <span class="text-stone-400 text-[10px] uppercase font-bold block">${isMl ? 'സ്റ്റോറേജ് വാടക' : 'Storage Cost'}</span>
+            <span class="text-base font-extrabold text-stone-700 mt-0.5 block">₹${rec.storage_cost_per_kg.toFixed(2)}<span class="text-[10px] text-stone-400">/14d</span></span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-stone-200/90 shadow-xs">
+            <span class="text-stone-400 text-[10px] uppercase font-bold block">${isMl ? 'മുതലാകുന്ന വില' : 'Break-even Price'}</span>
+            <span class="text-base font-extrabold text-amber-700 mt-0.5 block">₹${rec.break_even_price_per_kg.toFixed(2)}<span class="text-[10px] text-stone-400">/kg</span></span>
+          </div>
+        </div>
+
+        <!-- Facility Recommendation & Tip -->
+        <div class="mt-4 pt-3 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2 text-stone-700">
+            <i class="fa-solid fa-location-dot text-emerald-600"></i>
+            <span><strong>${isMl ? 'സംഭരണ കേന്ദ്രം:' : 'Nearest Facility:'}</strong> <span class="text-stone-900">${rec.recommended_facility}</span></span>
+          </div>
+          <span class="text-stone-500 text-[11px] italic">
+            <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> ${holdingTip}
+          </span>
+        </div>
+      `;
+    }
+
+    function renderPriceChart(trendSeries, currentPrice) {
+      const canvas = document.getElementById('harvestPriceChart');
+      if (!canvas) return;
+
+      const labels = trendSeries.map(p => p.date);
+      const prices = trendSeries.map(p => p.price_per_kg);
+      const todayIndex = trendSeries.findIndex(p => p.is_today);
+
+      const todayBadge = document.getElementById('pred-chart-today-badge');
+      if (todayBadge) {
+        todayBadge.textContent = `${currentLang === 'ml' ? 'ഇന്നത്തെ നിരക്ക്:' : 'Today:'} ₹${currentPrice.toFixed(2)}/kg`;
+      }
+
+      if (harvestPriceChartInstance) {
+        harvestPriceChartInstance.destroy();
+      }
+
+      const ctx = canvas.getContext('2d');
+      
+      // Gradients
+      const gradientPast = ctx.createLinearGradient(0, 0, 0, 260);
+      gradientPast.addColorStop(0, 'rgba(52, 211, 153, 0.25)');
+      gradientPast.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
+
+      // Point background colors
+      const pointColors = trendSeries.map((p, idx) => {
+        if (p.is_today) return '#fbbf24'; // Yellow for today
+        if (p.is_projected) return '#818cf8'; // Indigo for projected
+        return '#34d399'; // Emerald for actuals
+      });
+
+      harvestPriceChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: currentLang === 'ml' ? 'വില (₹/കിലോ)' : 'Price (₹/kg)',
+              data: prices,
+              borderColor: '#34d399',
+              backgroundColor: gradientPast,
+              borderWidth: 2.5,
+              fill: true,
+              tension: 0.35,
+              pointBackgroundColor: pointColors,
+              pointBorderColor: '#1c1917',
+              pointBorderWidth: 1.5,
+              pointRadius: (ctx) => {
+                const idx = ctx.dataIndex;
+                if (idx === todayIndex) return 6; // bigger dot for today
+                return 3.5;
+              },
+              segment: {
+                borderColor: ctx => ctx.p0DataIndex >= todayIndex ? '#818cf8' : '#34d399',
+                borderDash: ctx => ctx.p0DataIndex >= todayIndex ? [5, 5] : undefined
+              }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1c1917',
+              titleColor: '#e7e5e4',
+              bodyColor: '#34d399',
+              borderColor: '#44403c',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: false,
+              callbacks: {
+                title: function(items) {
+                  const idx = items[0].dataIndex;
+                  const item = trendSeries[idx];
+                  const tag = item.is_today ? ' (TODAY)' : (item.is_projected ? ' (AI Forecast)' : ' (Recorded Actual)');
+                  return item.date + tag;
+                },
+                label: function(item) {
+                  return `Wholesale Price: ₹${item.parsed.y.toFixed(2)} / kg`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(0, 0, 0, 0.05)' },
+              ticks: { color: '#78716c', maxTicksLimit: 8, font: { size: 10, weight: 600 } }
+            },
+            y: {
+              grid: { color: 'rgba(0, 0, 0, 0.05)' },
+              ticks: {
+                color: '#78716c',
+                font: { size: 10, weight: 600 },
+                callback: function(val) { return '₹' + val; }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function renderMandiHeatmap(mandis, localPrice) {
+      const container = document.getElementById('mandi-heatmap-list');
+      if (!container || !mandis) return;
+      const isMl = currentLang === 'ml';
+
+      container.innerHTML = '';
+
+      mandis.forEach((m, idx) => {
+        const isBest = (idx === 0);
+        const diffSign = m.price_diff_vs_local >= 0 ? '+' : '';
+        const diffColor = m.price_diff_vs_local > 0 ? 'text-emerald-700' : (m.price_diff_vs_local < 0 ? 'text-rose-600' : 'text-stone-400');
+        const bestBadge = isBest ? `<span class="bg-amber-100 text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-amber-300">${isMl ? 'ഏറ്റവും മികച്ച നിരക്ക്' : 'Best Net Rate'}</span>` : '';
+        const localTag = m.is_local_district ? `<span class="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded border border-emerald-200">${isMl ? 'പ്രാദേശിക മണ്ഡി' : 'Local Mandi'}</span>` : '';
+
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border ${isBest ? 'bg-amber-50/70 border-amber-300 shadow-xs' : 'bg-white border-stone-200 hover:border-stone-300 shadow-xs'} transition flex items-center justify-between gap-3 text-xs`;
+        card.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-extrabold text-stone-900 truncate text-xs sm:text-sm">${m.mandi_name}</span>
+              ${localTag}
+              ${bestBadge}
+            </div>
+            <div class="flex items-center gap-3 text-[11px] text-stone-500">
+              <span>${m.district} (${m.region_type})</span>
+              <span>•</span>
+              <span class="text-stone-700">${isMl ? 'വരവ്:' : 'Arrival:'} <strong>${m.daily_arrival_qtl} Qtl</strong></span>
+            </div>
+          </div>
+
+          <div class="text-right flex-shrink-0">
+            <div class="text-base sm:text-lg font-black text-stone-900">
+              ₹${m.net_effective_price_per_kg.toFixed(2)}
+              <span class="text-[10px] text-stone-400 font-normal">/kg</span>
+            </div>
+            <div class="text-[10px] font-bold ${diffColor}">
+              ${m.is_local_district ? (isMl ? 'ബേസ്‌ലൈൻ' : 'Baseline') : `${diffSign}₹${m.price_diff_vs_local.toFixed(2)} vs local`}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    
+    // Pest Advisory Global State
+    let currentPestData = null;
+    let currentPestFilter = 'all';
+
+    const PEST_TRANSLATIONS = {
+      pests: {
+        'Tomato Fruit Borer': 'തക്കാളി കായതുരപ്പൻ പുഴു',
+        'Late Blight / Fungal Blight': 'കുമിൾ രോഗം / ലേറ്റ് ബ്ലൈറ്റ്',
+        'Bacterial Wilt': 'ബാക്ടീരിയൽ വാട്ടരോഗം',
+        'Brown Planthopper (BPH)': 'നെല്ലിലെ തവിട്ടുചാഴി',
+        'Rice Blast Disease': 'നെല്ലിലെ കുമിൾ രോഗം (ബ്ലാസ്റ്റ്)',
+        'Banana Pseudostem Weevil': 'വാഴത്തടതുരപ്പൻ പുഴു',
+        'Sigatoka Leaf Spot': 'വാഴയിലെ സിഗാറ്റോക്ക ഇലപ്പുള്ളി രോഗം',
+        'Cardamom Thrips': 'ഏലത്തിലെ തൃപ്സ് കീടം',
+        'Azhukal / Capsule Rot': 'ഏലത്തിലെ അഴുകൽ രോഗം',
+        'Quick Wilt / Foot Rot': 'കുരുമുളകിലെ ദ്രുതവാട്ടം / വേരുചീയൽ',
+        'Soft Rot / Rhizome Rot': 'ഇഞ്ചിയിലെ ചീയൽ രോഗം',
+        'Yellow Vein Mosaic Virus (YVMV)': 'വെണ്ടയിലെ ഞരമ്പു മഞ്ഞളിപ്പ് രോഗം',
+        'Anthracnose / Fruit Rot / Dieback': 'പച്ചമുളകിലെ കായ്ചീയൽ / ഡൈബാക്ക്'
+      },
+      categories: {
+        'Insect Pest': 'കീട ബാധ (Insect)',
+        'Fungal Blight': 'കുമിൾ രോഗം (Fungal)',
+        'Bacterial Wilt': 'ബാക്ടീരിയൽ രോഗം',
+        'Viral Disease': 'വൈറസ് രോഗം'
+      }
+    };
+
+    // Load Pest Advisory from Backend API
+    async function loadPestAdvisory(crop, district) {
+      const grid = document.getElementById('pest-cards-grid');
+      if (!grid) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/pest-advisory?crop=${encodeURIComponent(crop)}&district=${encodeURIComponent(district)}`);
+        if (!res.ok) throw new Error('Failed to load pest advisory');
+        const data = await res.json();
+        currentPestData = data;
+        renderPestAdvisory(data);
+      } catch (err) {
+        console.warn('Could not load pest advisory:', err);
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-stone-500 text-xs">Could not load pest intelligence at this moment.</div>`;
+      }
+    }
+
+    function renderPestAdvisory(data) {
+      if (!data) return;
+      const isMl = currentLang === 'ml';
+
+      // 1. Update Threat Pill
+      const threatPill = document.getElementById('pest-threat-count-pill');
+      if (threatPill) {
+        if (data.active_alerts_count > 0) {
+          threatPill.innerHTML = `<span class="text-rose-600 font-black">${data.active_alerts_count} ${isMl ? 'അടിയന്തിര മുന്നറിയിപ്പ്' : 'Active Alerts'}</span>`;
+        } else {
+          threatPill.innerHTML = `<span class="text-emerald-600 font-bold">${isMl ? 'സാധാരണ നിരീക്ഷണം' : 'Low Risk / Normal'}</span>`;
+        }
+      }
+
+      // 2. Update Weather Risk Banner
+      const banner = document.getElementById('pest-weather-risk-banner');
+      const headline = document.getElementById('pest-risk-headline');
+      const advice = document.getElementById('pest-risk-advice');
+
+      if (banner && headline && advice) {
+        if (data.overall_status === 'ELEVATED_RISK') {
+          banner.className = 'mt-8 p-5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 transition-all duration-300';
+          headline.className = 'font-extrabold text-rose-950 text-sm sm:text-base';
+          advice.className = 'text-rose-800 leading-relaxed text-xs mt-1';
+          if (isMl) {
+            headline.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1.5"></i> കാലാവസ്ഥാ മുന്നറിയിപ്പ്: ${data.active_alerts_count} രോഗസാധ്യത(കൾ) കണ്ടെത്തി (${data.district})`;
+            advice.textContent = `നിലവിലെ അന്തരീക്ഷ ഈർപ്പവും മഴയും കുമിൾ-കീട ബാധയ്ക്ക് അനുകൂലമാണ്. മഴ കനക്കുന്നതിന് മുൻപ് ബോർഡോ മിശ്രിതം അല്ലെങ്കിൽ സ്യൂഡോമോണസ് തളിക്കുന്നത് ഉത്തമമാണ്.`;
+          } else {
+            headline.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1.5"></i> ${data.overall_headline}`;
+            advice.textContent = data.overall_advice;
+          }
+        } else {
+          banner.className = 'mt-8 p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 transition-all duration-300';
+          headline.className = 'font-extrabold text-emerald-950 text-sm sm:text-base';
+          advice.className = 'text-emerald-800 leading-relaxed text-xs mt-1';
+          if (isMl) {
+            headline.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-600 mr-1.5"></i> കാലാവസ്ഥ സുരക്ഷിതമാണ്: സാധാരണ കീട നിരീക്ഷണം തുടരുക (${data.district})`;
+            advice.textContent = `നിലവിലെ അന്തരീക്ഷ താപനിലയും ഈർപ്പവും നിയന്ത്രണവിധേയമാണ്. മഞ്ഞക്കെണികൾ സ്ഥാപിച്ച് നിരീക്ഷണം നടത്തുക.`;
+          } else {
+            headline.innerHTML = `<i class="fa-solid fa-shield-check text-emerald-600 mr-1.5"></i> ${data.overall_headline}`;
+            advice.textContent = data.overall_advice;
+          }
+        }
+      }
+
+      // 3. Update Crop Tag
+      const cropTag = document.getElementById('pest-crop-filter-tag');
+      if (cropTag) {
+        const cropDisplay = isMl ? (TRANSLATIONS.crops[data.crop_id] || data.crop) : data.crop;
+        cropTag.textContent = isMl ? `${cropDisplay} (${data.district}) - അനുയോജ്യമായ മാർഗ്ഗങ്ങൾ` : `Tailored for ${cropDisplay} in ${data.district}`;
+      }
+
+      // 4. Render Pest Cards Grid
+      renderPestCardsList(data.pests);
+    }
+
+    function renderPestCardsList(pests) {
+      const grid = document.getElementById('pest-cards-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const isMl = currentLang === 'ml';
+
+      const filtered = (currentPestFilter === 'all')
+        ? pests
+        : pests.filter(p => p.symptom_part === currentPestFilter || (currentPestFilter === 'stem' && p.symptom_part === 'root'));
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-8 text-center text-stone-400 text-xs">No specific pests recorded under this symptom filter.</div>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const displayName = isMl ? (PEST_TRANSLATIONS.pests[p.name] || p.name) : p.name;
+        const displayCategory = isMl ? (PEST_TRANSLATIONS.categories[p.category] || p.category) : p.category;
+        
+        let riskBadgeText = p.risk_level === 'HIGH_ALERT' 
+          ? (isMl ? 'അടിയന്തിര മുന്നറിയിപ്പ്' : 'Active Weather Alert')
+          : (p.risk_level === 'MODERATE_MONITOR' ? (isMl ? 'ശ്രദ്ധിക്കുക' : 'Monitor Crop') : (isMl ? 'സാധാരണ നിരീക്ഷണം' : 'Preventative'));
+
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-3xl p-5 sm:p-6 border border-stone-200 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between';
+        
+        card.innerHTML = `
+          <div>
+            <!-- Top Header & Category -->
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
+                ${displayCategory}
+              </span>
+              <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${p.risk_badge} flex items-center gap-1">
+                <i class="fa-solid ${p.risk_icon}"></i>
+                <span>${riskBadgeText}</span>
+              </span>
+            </div>
+
+            <!-- Pest Name -->
+            <h3 class="text-lg font-black text-stone-900 tracking-tight leading-snug">${displayName}</h3>
+            <p class="text-[11px] text-stone-400 italic mb-3 font-serif">${p.scientific_name}</p>
+
+            <!-- Weather Trigger Insight -->
+            <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200/80 text-[11px] text-stone-600 mb-4 flex items-start gap-2">
+              <i class="fa-solid fa-cloud-sun text-brand-600 mt-0.5"></i>
+              <span>${p.risk_explanation}</span>
+            </div>
+
+            <!-- Symptoms Checklist -->
+            <div class="space-y-1.5 mb-4">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">${isMl ? 'പരിശോധിക്കേണ്ട ലക്ഷണങ്ങൾ:' : 'Symptoms to Inspect:'}</span>
+              ${p.symptoms.slice(0, 3).map(s => `
+                <div class="flex items-start gap-1.5 text-xs text-stone-700">
+                  <i class="fa-solid fa-circle-exclamation text-amber-500 mt-0.5 text-[11px] flex-shrink-0"></i>
+                  <span>${escapeHtml(s)}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Dual-Track Tabs: Organic vs Chemical -->
+            <div class="pt-2 border-t border-stone-100">
+              <div class="flex items-center gap-1.5 bg-stone-100 p-1 rounded-xl mb-3">
+                <button onclick="switchPestTab('${p.id}', 'organic')" id="tab-btn-org-${p.id}" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-white text-emerald-800 shadow-xs cursor-pointer transition">
+                  🌿 ${isMl ? 'ജൈവ നിയന്ത്രണം' : 'Organic'}
+                </button>
+                <button onclick="switchPestTab('${p.id}', 'chemical')" id="tab-btn-chem-${p.id}" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg text-stone-500 hover:text-stone-800 cursor-pointer transition">
+                  🧪 ${isMl ? 'രാസവസ്തുക്കൾ' : 'Chemical'}
+                </button>
+              </div>
+
+              <!-- Organic Panel -->
+              <div id="panel-org-${p.id}" class="p-3 bg-emerald-50/70 rounded-xl border border-emerald-200/70 text-xs space-y-1.5">
+                <div class="font-extrabold text-emerald-950 flex items-center gap-1.5">
+                  <i class="fa-solid fa-leaf text-emerald-600"></i>
+                  <span>${p.organic_remedy.title}</span>
+                </div>
+                <p class="text-stone-700 leading-relaxed text-[11px]">${p.organic_remedy.preparation}</p>
+                <div class="text-[10px] text-emerald-800 font-semibold pt-1 border-t border-emerald-200/60">
+                  <i class="fa-regular fa-clock mr-1"></i> ${p.organic_remedy.application_interval}
+                </div>
+              </div>
+
+              <!-- Chemical Panel (Hidden by default) -->
+              <div id="panel-chem-${p.id}" class="hidden p-3 bg-amber-50/70 rounded-xl border border-amber-200/70 text-xs space-y-1.5">
+                <div class="font-extrabold text-amber-950 flex items-center gap-1.5">
+                  <i class="fa-solid fa-flask text-amber-700"></i>
+                  <span>${p.chemical_remedy.title}</span>
+                </div>
+                <p class="text-stone-700 text-[11px] leading-relaxed"><strong>Dosage:</strong> ${p.chemical_remedy.dosage}</p>
+                <div class="flex items-center justify-between text-[10px] text-amber-900 font-semibold pt-1 border-t border-amber-200/60">
+                  <span>PHI: <strong>${p.chemical_remedy.phi_days} days</strong></span>
+                  <span class="text-[9px] text-stone-500">${p.chemical_remedy.safety_note.slice(0, 35)}...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
+            <button onclick="askCopilotFromPestCard('${p.name}', '${currentDistrict}')" class="text-xs font-bold text-brand-700 hover:text-brand-900 flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-comments"></i>
+              <span>${isMl ? 'AI സഹായിയോട് ചോദിക്കൂ' : 'Ask AI Copilot'}</span>
+            </button>
+            <span class="text-[10px] text-stone-400 font-medium">KAU Guidelines</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function switchPestTab(pestId, tabType) {
+      const orgBtn = document.getElementById(`tab-btn-org-${pestId}`);
+      const chemBtn = document.getElementById(`tab-btn-chem-${pestId}`);
+      const orgPanel = document.getElementById(`panel-org-${pestId}`);
+      const chemPanel = document.getElementById(`panel-chem-${pestId}`);
+
+      if (!orgBtn || !chemBtn || !orgPanel || !chemPanel) return;
+
+      if (tabType === 'organic') {
+        orgBtn.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-white text-emerald-800 shadow-xs cursor-pointer transition';
+        chemBtn.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-stone-500 hover:text-stone-800 cursor-pointer transition';
+        orgPanel.classList.remove('hidden');
+        chemPanel.classList.add('hidden');
+      } else {
+        chemBtn.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-white text-amber-900 shadow-xs cursor-pointer transition';
+        orgBtn.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-stone-500 hover:text-stone-800 cursor-pointer transition';
+        chemPanel.classList.remove('hidden');
+        orgPanel.classList.add('hidden');
+      }
+    }
+
+    function filterPestCards(part, btn) {
+      currentPestFilter = part;
+      document.querySelectorAll('.pest-filter-btn').forEach(b => {
+        b.className = 'pest-filter-btn bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold px-4 py-2 rounded-xl border border-stone-200 transition cursor-pointer';
+      });
+      btn.className = 'pest-filter-btn bg-brand-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer';
+
+      if (currentPestData && currentPestData.pests) {
+        renderPestCardsList(currentPestData.pests);
+      }
+    }
+
+    function askCopilotFromPestCard(pestName, district) {
+      const isMl = currentLang === 'ml';
+      const prompt = isMl 
+        ? `${district}-ൽ എന്റെ വിളയിൽ ${pestName} ബാധിച്ചിരിക്കുന്നു. ഇത് നിയന്ത്രിക്കാൻ വീട്ടിലുണ്ടാക്കാവുന്ന ജൈവ കീടനാശിനികൾ ഏതെല്ലാമാണ്?`
+        : `My crop in ${district} is affected by ${pestName}. What organic bio-pesticide spray can I prepare at home to cure it?`;
+      
+      document.getElementById('ai-assistant').scrollIntoView({ behavior: 'smooth' });
+      sendMessage(prompt);
+    }
 
     // Initialize Page
     document.addEventListener('DOMContentLoaded', () => {
       applyLanguage(currentLang);
       checkBackendHealth();
+      loadHarvestPredictor(currentCrop, currentDistrict);
+      loadPestAdvisory(currentCrop, currentDistrict);
       loadDistricts();
       loadCropFit(currentDistrict);
       setupEventListeners();
@@ -968,6 +1779,7 @@
           }
         } catch (err) {}
         loadCropFit(currentDistrict);
+        loadHarvestPredictor(currentCrop, currentDistrict);
         updateChatContextSubtitle();
       });
 
@@ -981,6 +1793,7 @@
       // Crop change
       document.getElementById('crop-select').addEventListener('change', (e) => {
         currentCrop = e.target.value;
+        loadHarvestPredictor(currentCrop, currentDistrict);
         updateChatContextSubtitle();
       });
 
@@ -1000,15 +1813,31 @@
       });
 
       // Chat Form
-      document.getElementById('chat-form').addEventListener('submit', (e) => {
-        e.preventDefault();
+      const chatForm = document.getElementById('chat-form');
+      if (chatForm) {
+        chatForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          handleChatFormSubmit();
+        });
+      }
+
+      const chatSendBtn = document.getElementById('btn-chat-send');
+      if (chatSendBtn) {
+        chatSendBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleChatFormSubmit();
+        });
+      }
+
+      function handleChatFormSubmit() {
         const input = document.getElementById('chat-input');
+        if (!input) return;
         const text = input.value.trim();
         if (text) {
           sendMessage(text);
           input.value = '';
         }
-      });
+      }
     }
 
     function updateChatContextSubtitle() {
@@ -1032,6 +1861,7 @@
       currentDistrict = district;
       currentCrop = crop;
       loadCropFit(district);
+      loadHarvestPredictor(crop, district);
       updateChatContextSubtitle();
       runSowingAdvisory();
     }
@@ -1073,9 +1903,24 @@
 
       } catch (err) {
         console.error(err);
-        alert('Could not connect to FarmStart backend. Please verify FastAPI is running on http://127.0.0.1:8000');
+        const isMl = currentLang === 'ml';
+        container.innerHTML = `
+          <div class="bg-amber-50 border border-amber-200 rounded-3xl p-6 text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h4 class="font-bold text-stone-900">${isMl ? 'സെർവറുമായി ബന്ധപ്പെടാൻ സാധിക്കുന്നില്ല' : 'Could Not Connect to Backend'}</h4>
+            <p class="text-xs text-stone-600 max-w-md mx-auto leading-relaxed">
+              ${isMl ? 'FarmStart സെർവർ (http://127.0.0.1:8000) പ്രവർത്തിക്കുന്നുണ്ടെന്ന് ഉറപ്പാക്കുക. അല്പം കഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക.' : 'Please verify that the FarmStart FastAPI server is running on http://127.0.0.1:8000 and try again.'}
+            </p>
+            <button onclick="runSowingAdvisory()" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer shadow-sm">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>${isMl ? 'വീണ്ടും ശ്രമിക്കുക' : 'Retry'}</span>
+            </button>
+          </div>
+        `;
       } finally {
-        btnText.innerHTML = `Get Advisory`;
+        btnText.innerHTML = currentLang === 'ml' ? 'ഉപദേശം നേടുക' : 'Get Advisory';
         btn.disabled = false;
       }
     }
@@ -1372,6 +2217,7 @@
     function selectCropFromCard(cropId) {
       document.getElementById('crop-select').value = cropId;
       currentCrop = cropId;
+      loadHarvestPredictor(currentCrop, currentDistrict);
       updateChatContextSubtitle();
       document.getElementById('advisory-tool').scrollIntoView({ behavior: 'smooth' });
       runSowingAdvisory();
@@ -1383,12 +2229,25 @@
     }
 
     async function sendMessage(userQuestion) {
-      appendUserMessage(userQuestion);
+      if (!userQuestion || !userQuestion.trim()) return;
+      const cleanQuestion = userQuestion.trim();
+
+      const chatInput = document.getElementById('chat-input');
+      const sendBtn = document.getElementById('btn-chat-send');
+      const sendBtnText = document.getElementById('btn-send-text');
+
+      if (sendBtn) sendBtn.disabled = true;
+      if (chatInput) chatInput.disabled = true;
+      if (sendBtnText) {
+        sendBtnText.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i>`;
+      }
+
+      appendUserMessage(cleanQuestion);
       const loadingId = appendLoadingIndicator();
 
       const backendQuestion = currentLang === 'ml'
-        ? `${userQuestion} (ദയവായി ലളിതമായ മലയാളത്തിൽ 3 വ്യക്തമായ നിർദ്ദേശങ്ങളോടെ മറുപടി നൽകുക)`
-        : userQuestion;
+        ? `${cleanQuestion} (ദയവായി ലളിതമായ മലയാളത്തിൽ 3 വ്യക്തമായ നിർദ്ദേശങ്ങളോടെ മറുപടി നൽകുക)`
+        : cleanQuestion;
 
       const payload = {
         farmer_name: currentFarmerName,
@@ -1420,10 +2279,11 @@
         appendAiMessage(data.reply, data.actionable_tips, data.suggested_followups);
 
         // Update history
-        conversationHistory.push({ role: 'user', content: userQuestion });
+        conversationHistory.push({ role: 'user', content: cleanQuestion });
         conversationHistory.push({ role: 'assistant', content: data.reply });
 
       } catch (err) {
+        console.error('Chat error:', err);
         removeLoadingIndicator(loadingId);
         const errMsg = currentLang === 'ml' 
           ? 'ക്ഷമിക്കണം, AI സെർവറുമായി ബന്ധപ്പെടാൻ സാധിക്കുന്നില്ല. backend പ്രവർത്തിക്കുന്നുണ്ടോ എന്ന് ദയവായി പരിശോധിക്കുക.'
@@ -1431,8 +2291,18 @@
         appendAiMessage(
           errMsg,
           currentLang === 'ml' ? ['സെർവർ ലോഗുകൾ പരിശോധിക്കുക', '.env ഫയലിലെ Groq API Key പരിശോധിക്കുക'] : ['Check backend logs', 'Verify Groq API Key in .env'],
-          currentLang === 'ml' ? ['ഇപ്പോൾ നടാൻ പറ്റിയ സമയമാണോ?', 'വിത്തിന്റെ വില എത്രയാണ്?'] : ['Is it safe to plant now?', 'What are the current seed prices?']
+          currentLang === 'ml' ? ['ഇപ്പോൾ നടാൻ പറ്റിയ സമയമാണോ?', 'വിത്തിന്റെ വില എത്രയാണ്?'] : ['Is it safe to plant now?', 'What are the current seed prices?'],
+          cleanQuestion
         );
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
+        if (chatInput) {
+          chatInput.disabled = false;
+          chatInput.focus();
+        }
+        if (sendBtnText) {
+          sendBtnText.textContent = currentLang === 'ml' ? 'അയക്കുക' : 'Send';
+        }
       }
     }
 
@@ -1481,7 +2351,7 @@
       if (el) el.remove();
     }
 
-    function appendAiMessage(reply, tips = [], followups = []) {
+    function appendAiMessage(reply, tips = [], followups = [], retryQuestion = null) {
       const container = document.getElementById('chat-messages');
 
       let tipsHtml = '';
@@ -1499,6 +2369,19 @@
         `;
       }
 
+      let retryHtml = '';
+      if (retryQuestion) {
+        const safeRetry = escapeHtml(retryQuestion).replace(/'/g, "\\'");
+        retryHtml = `
+          <div class="pt-2">
+            <button onclick="sendMessage('${safeRetry}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg border border-brand-200 transition cursor-pointer shadow-xs">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>${currentLang === 'ml' ? 'വീണ്ടും ശ്രമിക്കുക' : 'Retry Question'}</span>
+            </button>
+          </div>
+        `;
+      }
+
       const msg = document.createElement('div');
       msg.className = 'flex items-start gap-3';
       msg.innerHTML = `
@@ -1508,6 +2391,7 @@
         <div class="bg-white rounded-2xl rounded-tl-none p-4 max-w-lg border border-stone-200/80 shadow-sm space-y-2">
           <p class="text-stone-700 text-xs sm:text-sm leading-relaxed">${escapeHtml(reply)}</p>
           ${tipsHtml}
+          ${retryHtml}
         </div>
       `;
       container.appendChild(msg);
