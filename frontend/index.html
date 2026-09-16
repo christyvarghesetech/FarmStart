@@ -588,21 +588,21 @@
               <!-- Suggested follow-up prompt chips -->
               <div id="suggested-chips-container" class="px-4 py-2 bg-stone-100/80 border-t border-stone-200/80 flex items-center gap-2 overflow-x-auto text-[11px]">
                 <span id="suggested-label" class="text-stone-400 font-bold whitespace-nowrap">Suggested:</span>
-                <button id="chip-1" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
+                <button id="chip-1" type="button" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''), event)" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "Is it a good time to plant tomatoes here in Idukki?"
                 </button>
-                <button id="chip-2" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
+                <button id="chip-2" type="button" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''), event)" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "What is the fair seed price?"
                 </button>
-                <button id="chip-3" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''))" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
+                <button id="chip-3" type="button" onclick="sendQuickPrompt(this.dataset.prompt || this.textContent.trim().replace(/^&quot;|&quot;$/g, ''), event)" class="bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer">
                   "Subsidies in Kerala?"
                 </button>
               </div>
 
               <!-- Chat Input Bar -->
-              <form id="chat-form" class="p-3 bg-white border-t border-stone-200 flex items-center gap-2">
-                <input type="text" id="chat-input" placeholder="Ask anything about sowing dates, seed prices, soil care, or weather..." class="flex-1 bg-stone-100 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand-500/30 font-medium">
-                <button type="submit" id="btn-chat-send" class="bg-brand-600 hover:bg-brand-700 text-white rounded-xl px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
+              <form id="chat-form" action="javascript:void(0);" onsubmit="event.preventDefault(); return false;" class="p-3 bg-white border-t border-stone-200 flex items-center gap-2">
+                <input type="text" id="chat-input" placeholder="Ask anything about sowing dates, seed prices, soil care, or weather..." class="flex-1 bg-stone-100 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-brand-500/30 font-medium" autocomplete="off">
+                <button type="button" id="btn-chat-send" onclick="handleChatFormSubmit(event)" class="bg-brand-600 hover:bg-brand-700 text-white rounded-xl px-5 py-2.5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow transition active:scale-95 cursor-pointer">
                   <span id="btn-send-text">Send</span>
                   <i class="fa-solid fa-paper-plane text-xs"></i>
                 </button>
@@ -1816,27 +1816,49 @@
       const chatForm = document.getElementById('chat-form');
       if (chatForm) {
         chatForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          handleChatFormSubmit();
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          handleChatFormSubmit(e);
+          return false;
         });
       }
 
       const chatSendBtn = document.getElementById('btn-chat-send');
       if (chatSendBtn) {
         chatSendBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          handleChatFormSubmit();
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          handleChatFormSubmit(e);
         });
       }
 
-      function handleChatFormSubmit() {
-        const input = document.getElementById('chat-input');
-        if (!input) return;
-        const text = input.value.trim();
-        if (text) {
-          sendMessage(text);
-          input.value = '';
-        }
+      const chatInputEl = document.getElementById('chat-input');
+      if (chatInputEl) {
+        chatInputEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleChatFormSubmit(e);
+          }
+        });
+      }
+    }
+
+    function handleChatFormSubmit(e) {
+      if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
+      const input = document.getElementById('chat-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (text) {
+        input.value = '';
+        sendMessage(text);
       }
     }
 
@@ -2223,21 +2245,34 @@
       runSowingAdvisory();
     }
 
+    let isChatSending = false;
+
     // Chat Message Handling
-    function sendQuickPrompt(promptText) {
+    function sendQuickPrompt(promptText, event) {
+      if (event) {
+        if (typeof event.preventDefault === 'function') event.preventDefault();
+        if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      }
       sendMessage(promptText);
     }
 
     async function sendMessage(userQuestion) {
-      if (!userQuestion || !userQuestion.trim()) return;
+      if (!userQuestion || !userQuestion.trim() || isChatSending) return;
+      isChatSending = true;
       const cleanQuestion = userQuestion.trim();
+
+      // Lock current window scroll position to prevent browser jumping
+      const currentScrollY = window.scrollY;
 
       const chatInput = document.getElementById('chat-input');
       const sendBtn = document.getElementById('btn-chat-send');
       const sendBtnText = document.getElementById('btn-send-text');
 
       if (sendBtn) sendBtn.disabled = true;
-      if (chatInput) chatInput.disabled = true;
+      if (chatInput) {
+        chatInput.readOnly = true; // Use readOnly so focus is not forcefully dropped to body
+        chatInput.classList.add('opacity-70');
+      }
       if (sendBtnText) {
         sendBtnText.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i>`;
       }
@@ -2295,13 +2330,19 @@
           cleanQuestion
         );
       } finally {
+        isChatSending = false;
         if (sendBtn) sendBtn.disabled = false;
         if (chatInput) {
-          chatInput.disabled = false;
-          chatInput.focus();
+          chatInput.readOnly = false;
+          chatInput.classList.remove('opacity-70');
+          chatInput.focus({ preventScroll: true }); // Prevent browser from scrolling on focus!
         }
         if (sendBtnText) {
           sendBtnText.textContent = currentLang === 'ml' ? 'അയക്കുക' : 'Send';
+        }
+        // Restore window scroll if browser tried to scroll to top
+        if (Math.abs(window.scrollY - currentScrollY) > 80) {
+          window.scrollTo({ top: currentScrollY, behavior: 'instant' });
         }
       }
     }
@@ -2374,7 +2415,7 @@
         const safeRetry = escapeHtml(retryQuestion).replace(/'/g, "\\'");
         retryHtml = `
           <div class="pt-2">
-            <button onclick="sendMessage('${safeRetry}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg border border-brand-200 transition cursor-pointer shadow-xs">
+            <button type="button" onclick="sendMessage('${safeRetry}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg border border-brand-200 transition cursor-pointer shadow-xs">
               <i class="fa-solid fa-rotate-right"></i>
               <span>${currentLang === 'ml' ? 'വീണ്ടും ശ്രമിക്കുക' : 'Retry Question'}</span>
             </button>
@@ -2400,12 +2441,20 @@
       // Update followups chips below chat
       if (followups && followups.length > 0) {
         const chipsContainer = document.getElementById('suggested-chips-container');
-        chipsContainer.innerHTML = `<span class="text-stone-400 font-bold whitespace-nowrap">Follow-up:</span>`;
+        const followupLabel = currentLang === 'ml' ? 'തുടർ ചോദ്യങ്ങൾ:' : 'Follow-up:';
+        chipsContainer.innerHTML = `<span class="text-stone-400 font-bold whitespace-nowrap">${followupLabel}</span>`;
         followups.forEach(f => {
           const btn = document.createElement('button');
-          btn.className = 'bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium';
+          btn.type = 'button';
+          btn.className = 'bg-white hover:bg-brand-50 hover:text-brand-800 text-stone-700 px-3 py-1 rounded-lg whitespace-nowrap border border-stone-200 transition font-medium cursor-pointer';
           btn.textContent = `"${f}"`;
-          btn.onclick = () => sendMessage(f);
+          btn.onclick = (e) => {
+            if (e) {
+              if (typeof e.preventDefault === 'function') e.preventDefault();
+              if (typeof e.stopPropagation === 'function') e.stopPropagation();
+            }
+            sendMessage(f);
+          };
           chipsContainer.appendChild(btn);
         });
       }
